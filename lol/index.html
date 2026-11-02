@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0a1021">
+<meta name="description" content="Entrelia LoL Lab: il laboratorio pubblico di Atlas dedicato a League of Legends.">
+<title>Atlas LoL Lab | Entrelia</title>
+<style>
+:root{color-scheme:dark;--bg:#0a1021;--panel:#121e35;--edge:#344764;--txt:#edf2ff;--muted:#b2c3dd;--accent:#79f1c0}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(circle at 80% 0%,#203e58 0%,transparent 45%),radial-gradient(circle at 0% 80%,#24214d 0%,transparent 55%),var(--bg);font-family:system-ui,-apple-system,Segoe UI,sans-serif;color:var(--txt)}
+.wrap{max-width:1000px;margin:auto;padding:30px 22px 70px}header{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}.brand{font-size:1.1rem;letter-spacing:.18em;font-weight:800;color:var(--txt)}
+.tag{display:inline-block;padding:7px 11px;border:1px solid #497965;border-radius:100px;color:var(--accent);font-size:.82rem;letter-spacing:.07em;margin-top:74px}
+h1{font-size:clamp(3rem,9vw,6.4rem);line-height:1.05;letter-spacing:-.045em;margin:18px 0}h1 span{color:var(--accent)}
+.lead{font-size:clamp(1.1rem,2.8vw,1.4rem);color:var(--muted);max-width:670px;line-height:1.6}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:40px}.card{background:#101d34d9;border:1px solid var(--edge);border-radius:19px;padding:24px;min-height:206px;box-shadow:0 10px 40px #0002}.card b{font-size:1.1rem}.card p{line-height:1.6;color:var(--muted)}.number{font-size:.83rem;color:var(--accent);font-weight:750;letter-spacing:.12em;margin-bottom:17px}
+section{margin-top:45px}.strip{border:1px solid var(--edge);border-radius:18px;padding:22px 26px;background:#141e31;display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap}.strip p{margin:6px 0 0;color:var(--muted)}
+footer{margin-top:70px;border-top:1px solid var(--edge);padding-top:22px;color:var(--muted);font-size:.9rem}
+@media(max-width:720px){.grid{grid-template-columns:1fr}.tag{margin-top:50px}.card{min-height:0}}
+</style>
+</head>
+<body><div class="wrap">
+<header><a href="/" class="brand">✦ ENTRELIA</a><span style="color:var(--muted)">Powered by Atlas</span></header>
+<main>
+<div class="tag">LABORATORIO PUBBLICO · PROTOTIPO 0.1</div>
+<h1>ATLAS <span>LoL Lab</span></h1>
+<p class="lead">Dalle partite ai dati, dai replay alle simulazioni: un laboratorio aperto per esplorare League of Legends, costruito un aggiornamento alla volta.</p>
+<div class="grid">
+<article class="card"><div class="number">01 / MATCH INSIGHTS</div><b>Analisi delle partite</b><p>Statistiche, andamento e domande da esplorare. In futuro, dati verificati dalle API autorizzate di Riot.</p></article>
+<article class="card"><div class="number">02 / REPLAY LAB</div><b>Osservare il gioco</b><p>Una futura visualizzazione di replay ed eventi, con timeline e strumenti di studio.</p></article>
+<article class="card"><div class="number">03 / BUILD LOG</div><b>Diario di sviluppo</b><p>Versioni, esperimenti e decisioni: lo sviluppo sarà visibile nel tempo, senza confondere idee e funzionalità già pronte.</p></article>
+</div>
+<section class="strip"><div><strong>Stato del progetto: fondazione pubblicata</strong><p>Questa pagina è una vetrina iniziale. Nessuna analisi live o connessione a Riot è attiva.</p></div><span class="tag" style="margin:0">v0.1</span></section>
+</main>
+<footer>Entrelia × Atlas · Progetto indipendente, non affiliato né approvato da Riot Games.</footer>
+</div></body></html>
