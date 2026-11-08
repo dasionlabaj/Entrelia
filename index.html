@@ -100,6 +100,16 @@ p.hero-copy{color:#c4d2e1;letter-spacing:.02em;font-weight:350}
 .archive-signal>div::before{content:"";position:absolute;inset:8px;border-radius:50%;pointer-events:none;background:conic-gradient(from -90deg,#92eccc 0deg var(--dial-angle,0deg),#355163 var(--dial-angle,0deg) 360deg);-webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 8px),#000 calc(100% - 7px));mask:radial-gradient(farthest-side,transparent calc(100% - 8px),#000 calc(100% - 7px))}
 .archive-signal>div{--dial-angle:0deg}
 
+.dimensional-trace{border:1px solid #506a80;border-radius:12px;padding:1rem;margin:1rem 0;background:#0b1829;text-align:left}
+.dimensional-heading{display:flex;justify-content:space-between;gap:.7rem;align-items:baseline;flex-wrap:wrap;font:.72rem ui-monospace,Consolas,monospace;letter-spacing:.05em;color:#a9dacd}
+.dimensional-heading small{color:#9fb4c6}
+#dimensional-scene{display:block;width:100%;height:auto;max-height:340px;margin:.6rem 0;background:linear-gradient(155deg,#0b1a2d,#102238);border-radius:8px;touch-action:pan-y}
+.dimensional-controls{display:flex;align-items:center;gap:.7rem;flex-wrap:wrap}
+.dimensional-controls label{display:flex;gap:.5rem;align-items:center;font-size:.72rem;color:#b9c9d8;min-width:125px;flex:1}
+.dimensional-controls input{width:100%;min-width:60px;accent-color:#9edacb}
+.dimensional-controls button{margin:0}
+#dimensional-note{font-size:.77rem;color:#bfd1de;line-height:1.5;margin:.7rem 0 .1rem}
+@media(max-width:580px){.dimensional-controls label{flex:1 1 100%}}
 /* Observed rank: short transitions only on new snapshots, never perpetual motion. */
 .lp-panel{margin:1rem 0 1.4rem;padding:1.2rem;border:1px solid #537b86;border-radius:12px;background:linear-gradient(140deg,#0c202e,#171e34);text-align:left}
 .lp-heading{display:flex;align-items:center;gap:1rem;flex-wrap:wrap}
@@ -125,7 +135,7 @@ p.hero-copy{color:#c4d2e1;letter-spacing:.02em;font-weight:350}
 <div class="observatory-top"><a class="corner-brand" href="/" aria-label="Entrelia, home"><span class="mini-mark" aria-hidden="true">✧</span> E / ATLAS</a><span class="signal"><i></i> OBSERVATORY · 001</span></div>
 <div class="hero-orbit" aria-hidden="true"><div class="orbit orbit-a"></div><div class="orbit orbit-b"></div><div class="orbit orbit-c"></div><div class="electron electron-a"></div><div class="electron electron-b"></div><svg class="atlas-sigil" width="118" height="118" viewBox="0 0 118 118" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M59 8L108 59L59 110L10 59L59 8Z" stroke="currentColor" stroke-width="1.5"/><path d="M59 25L93 59L59 93L25 59L59 25Z" stroke="currentColor" stroke-opacity=".58"/><path d="M59 8V110M10 59H108" stroke="currentColor" stroke-opacity=".38"/><circle cx="59" cy="59" r="8" fill="currentColor"/><circle cx="59" cy="59" r="20" stroke="currentColor" stroke-opacity=".7"/></svg></div>
 <div class="hero-eyebrow">UN UNIVERSO DA OSSERVARE, NON SOLTANTO DA VISITARE</div>
-<h1>ENTRELIA<span class="period">.</span></h1><div class="sub">Powered by Atlas · Digital Observatory</div><p class="hero-copy">Ogni dato è una traccia. Ogni traccia, una storia.<br>Entra nell'osservatorio.</p><section id="welcome"><button class="action" id="enter" type="button">Enter Entrelia →</button></section><section id="hub" class="panel" hidden><h2>Esplora Entrelia</h2><p>Il nostro universo prende forma, un modulo alla volta.</p><button id="analyst" class="module" type="button"><strong>LoL Analyst →</strong><span>Uno spazio dedicato all'analisi delle partite di League of Legends.</span></button><button class="back" id="home-from-hub" type="button">← Torna alla pagina iniziale</button></section><section id="analyst-view" class="panel" hidden><h2>LoL Analyst</h2><p>Le ultime 20 partite reali di <strong>daxs#EUW</strong>.</p><p id="lol-status" class="status" role="status" aria-live="polite">Apri il modulo per caricare le partite.</p><div id="archive-signal" class="archive-signal" aria-live="polite"><div><small>OGGI · DAX</small><strong id="archive-today">—</strong></div><div><small>DAL 08/11</small><strong id="archive-total">—</strong></div><div><small>ARCHIVIO</small><strong id="archive-all">—</strong></div></div><section class="trend-panel" aria-label="Andamento partite classificate"><div class="trend-heading"><div><span class="trend-kicker">ATLAS / PERFORMANCE TRACE</span><h3>La curva di daxs</h3></div><span id="trend-record">Caricamento…</span></div><svg id="trend-chart" viewBox="0 0 640 205" role="img" aria-label="Andamento delle vittorie nette di Dax partita dopo partita" preserveAspectRatio="xMidYMid meet"><title>Andamento partite classificate</title></svg><p id="trend-note">Vittorie cumulative meno sconfitte. Non sono LP né progressi di lega.</p></section><section class="lp-panel" aria-label="Storico LP osservati di daxs"><div class="lp-heading"><div class="lp-badge" aria-hidden="true"><svg viewBox="0 0 64 72" width="55" height="62"><path d="M32 3 59 16 54 48 32 67 10 48 5 16Z" fill="#1a293d" stroke="#9ed7ca" stroke-width="2"/><path d="M32 13 46 22 43 43 32 54 21 43 18 22Z" fill="none" stroke="#8eaaee" stroke-width="1.5"/><path d="M32 21 40 35 32 43 24 35Z" fill="#97dccc"/></svg></div><div><span class="trend-kicker">ATLAS / RANK TRACE</span><h3>daxs · Solo/Duo</h3><p id="lp-tier">Lega da verificare</p><p id="lp-current-riot" aria-live="polite">Rank Riot: caricamento…</p></div><div class="lp-current"><strong id="lp-value">—</strong><small>LP · punto storico</small></div></div><div class="lp-meter" role="progressbar" aria-label="LP nella divisione attuale" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="lp-meter"><div class="lp-ghost" id="lp-ghost"></div><div class="lp-fill" id="lp-fill"></div></div><div class="lp-meter-label"><span id="lp-before">In attesa di rilevazioni</span><span id="lp-delta" aria-live="polite">—</span></div><svg id="lp-chart" viewBox="0 0 640 165" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Rilevazioni registrate degli LP di daxs."><title>Storico degli LP registrati</title></svg><p id="lp-note">Storico LP: i valori precedenti non vengono stimati.</p></section><div id="lol-summary" class="summary-stats" hidden></div><div id="lol-matches" class="match-list" aria-live="polite"></div><button type="button" class="action" id="lol-refresh">Aggiorna partite ↻</button><button class="back" id="back-to-hub" type="button">← Torna ai moduli</button></section><footer>Coming soon · <a href="mailto:contact@atlas-open-observatory.com" style="color:inherit;text-decoration:underline;text-underline-offset:4px">Contact us</a></footer></main><script>const welcome=document.getElementById('welcome'),hub=document.getElementById('hub'),analystView=document.getElementById('analyst-view');function show(view){welcome.hidden=view!=='welcome';hub.hidden=view!=='hub';analystView.hidden=view!=='analyst';}document.getElementById('enter').addEventListener('click',()=>show('hub'));document.getElementById('analyst').addEventListener('click',()=>{show('analyst');loadMatches();loadArchiveCounters();loadTrend();loadRankHistory();loadCurrentRank()});document.getElementById('home-from-hub').addEventListener('click',()=>show('welcome'));document.getElementById('back-to-hub').addEventListener('click',()=>show('hub'));const status=document.getElementById('lol-status'),matches=document.getElementById('lol-matches'),summary=document.getElementById('lol-summary');
+<h1>ENTRELIA<span class="period">.</span></h1><div class="sub">Powered by Atlas · Digital Observatory</div><p class="hero-copy">Ogni dato è una traccia. Ogni traccia, una storia.<br>Entra nell'osservatorio.</p><section id="welcome"><button class="action" id="enter" type="button">Enter Entrelia →</button></section><section id="hub" class="panel" hidden><h2>Esplora Entrelia</h2><p>Il nostro universo prende forma, un modulo alla volta.</p><button id="analyst" class="module" type="button"><strong>LoL Analyst →</strong><span>Uno spazio dedicato all'analisi delle partite di League of Legends.</span></button><button class="back" id="home-from-hub" type="button">← Torna alla pagina iniziale</button></section><section id="analyst-view" class="panel" hidden><h2>LoL Analyst</h2><p>Le ultime 20 partite reali di <strong>daxs#EUW</strong>.</p><p id="lol-status" class="status" role="status" aria-live="polite">Apri il modulo per caricare le partite.</p><div id="archive-signal" class="archive-signal" aria-live="polite"><div><small>OGGI · DAX</small><strong id="archive-today">—</strong></div><div><small>DAL 08/11</small><strong id="archive-total">—</strong></div><div><small>ARCHIVIO</small><strong id="archive-all">—</strong></div></div><section class="trend-panel" aria-label="Andamento partite classificate"><div class="trend-heading"><div><span class="trend-kicker">ATLAS / PERFORMANCE TRACE</span><h3>La curva di daxs</h3></div><span id="trend-record">Caricamento…</span></div><svg id="trend-chart" viewBox="0 0 640 205" role="img" aria-label="Andamento delle vittorie nette di Dax partita dopo partita" preserveAspectRatio="xMidYMid meet"><title>Andamento partite classificate</title></svg><p id="trend-note">Vittorie cumulative meno sconfitte. Non sono LP né progressi di lega.</p></section><section class="lp-panel" aria-label="Storico LP osservati di daxs"><div class="lp-heading"><div class="lp-badge" aria-hidden="true"><svg viewBox="0 0 64 72" width="55" height="62"><path d="M32 3 59 16 54 48 32 67 10 48 5 16Z" fill="#1a293d" stroke="#9ed7ca" stroke-width="2"/><path d="M32 13 46 22 43 43 32 54 21 43 18 22Z" fill="none" stroke="#8eaaee" stroke-width="1.5"/><path d="M32 21 40 35 32 43 24 35Z" fill="#97dccc"/></svg></div><div><span class="trend-kicker">ATLAS / RANK TRACE</span><h3>daxs · Solo/Duo</h3><p id="lp-tier">Lega da verificare</p><p id="lp-current-riot" aria-live="polite">Rank Riot: caricamento…</p></div><div class="lp-current"><strong id="lp-value">—</strong><small>LP · punto storico</small></div></div><div class="lp-meter" role="progressbar" aria-label="LP nella divisione attuale" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="lp-meter"><div class="lp-ghost" id="lp-ghost"></div><div class="lp-fill" id="lp-fill"></div></div><div class="lp-meter-label"><span id="lp-before">In attesa di rilevazioni</span><span id="lp-delta" aria-live="polite">—</span></div><section class="dimensional-trace" aria-label="Traiettoria tridimensionale degli LP"><div class="dimensional-heading"><strong>ATLAS / DIMENSIONAL RANK TRACE</strong><small>Osservazioni reali · nessuna interpolazione dei dati mancanti</small></div><svg id="dimensional-scene" viewBox="0 0 640 275" role="img" aria-label="Proiezione tridimensionale orientabile dello storico LP" preserveAspectRatio="xMidYMid meet"><title>Traiettoria delle osservazioni LP</title></svg><div class="dimensional-controls"><label>Rotazione <input id="dimensional-yaw" aria-label="Rotazione orizzontale della scena" type="range" min="-180" max="180" value="-36"></label><label>Inclinazione <input id="dimensional-pitch" aria-label="Inclinazione della scena" type="range" min="-75" max="75" value="23"></label><label>Osservazioni <input id="dimensional-step" aria-label="Numero di osservazioni visualizzate" type="range" min="1" max="1" value="1"></label><button class="back" type="button" id="dimensional-reset">Vista iniziale</button></div><p id="dimensional-note" aria-live="polite">In attesa di osservazioni: nessuna traiettoria ricostruita.</p></section><svg id="lp-chart" viewBox="0 0 640 165" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Rilevazioni registrate degli LP di daxs."><title>Storico degli LP registrati</title></svg><p id="lp-note">Storico LP: i valori precedenti non vengono stimati.</p></section><div id="lol-summary" class="summary-stats" hidden></div><div id="lol-matches" class="match-list" aria-live="polite"></div><button type="button" class="action" id="lol-refresh">Aggiorna partite ↻</button><button class="back" id="back-to-hub" type="button">← Torna ai moduli</button></section><footer>Coming soon · <a href="mailto:contact@atlas-open-observatory.com" style="color:inherit;text-decoration:underline;text-underline-offset:4px">Contact us</a></footer></main><script>const welcome=document.getElementById('welcome'),hub=document.getElementById('hub'),analystView=document.getElementById('analyst-view');function show(view){welcome.hidden=view!=='welcome';hub.hidden=view!=='hub';analystView.hidden=view!=='analyst';}document.getElementById('enter').addEventListener('click',()=>show('hub'));document.getElementById('analyst').addEventListener('click',()=>{show('analyst');loadMatches();loadArchiveCounters();loadTrend();loadRankHistory();loadCurrentRank()});document.getElementById('home-from-hub').addEventListener('click',()=>show('welcome'));document.getElementById('back-to-hub').addEventListener('click',()=>show('hub'));const status=document.getElementById('lol-status'),matches=document.getElementById('lol-matches'),summary=document.getElementById('lol-summary');
 const fmt=v=>Number.isFinite(v)?v.toLocaleString('it-IT'):'—';
 function stat(label,value){const box=document.createElement('div');box.className='stat';const a=document.createElement('small');a.textContent=label;const b=document.createElement('b');b.textContent=value;box.append(a,b);return box;}
 function damageChart(m){
@@ -350,6 +360,70 @@ async function loadTrend(){
 }
 
 
+// Lightweight 3D orthographic projection. Time never reverses; historical LP may.
+let dimensionalPoints=[];
+function drawDimensionalTrace(){
+ const svg=document.getElementById('dimensional-scene'),note=document.getElementById('dimensional-note');
+ const yaw=Number(document.getElementById('dimensional-yaw').value)*Math.PI/180;
+ const pitch=Number(document.getElementById('dimensional-pitch').value)*Math.PI/180;
+ const step=document.getElementById('dimensional-step');
+ const shown=dimensionalPoints.slice(0,Math.max(0,Math.min(dimensionalPoints.length,Number(step.value)||1)));
+ const NS='http://www.w3.org/2000/svg';svg.replaceChildren();
+ const el=(tag,attrs,parent=svg)=>{const node=document.createElementNS(NS,tag);for(const [key,val] of Object.entries(attrs))node.setAttribute(key,String(val));parent.append(node);return node;};
+ const maxCount=Math.max(2,dimensionalPoints.length);
+ // X: LP or tier-aware numerical rank, Y: observed delta, Z: chronological observation.
+ const tierIndex={IRON:0,BRONZE:1,SILVER:2,GOLD:3,PLATINUM:4,EMERALD:5,DIAMOND:6,MASTER:7,GRANDMASTER:8,CHALLENGER:9};
+ const divIndex={IV:0,III:1,II:2,I:3};
+ const score=p=>p.tier&&tierIndex[p.tier.toUpperCase()]!==undefined?
+ tierIndex[p.tier.toUpperCase()]*400+(divIndex[p.division]??0)*100+p.lp:p.lp;
+ const values=dimensionalPoints.map(score),min=Math.min(0,...values),max=Math.max(100,...values);
+ const extent=Math.max(60,max-min);
+ const coords=dimensionalPoints.map((p,i)=>{
+  const x=((score(p)-min)/extent-.5)*210;
+  const prev=i?dimensionalPoints[i-1]:null;
+  const comparable=prev&&prev.tier===p.tier&&prev.division===p.division;
+  const delta=comparable?p.lp-prev.lp:0;
+  const y=Math.max(-90,Math.min(90,delta*1.5));
+  const z=(i/(maxCount-1)-.5)*260;
+  return {x,y,z,delta,p};
+ });
+ const rotate=({x,y,z})=>{
+  const xx=x*Math.cos(yaw)-z*Math.sin(yaw);
+  const zz=x*Math.sin(yaw)+z*Math.cos(yaw);
+  return {x:320+xx*.92,y:139-(y*Math.cos(pitch)-zz*Math.sin(pitch))*.72,depth:y*Math.sin(pitch)+zz*Math.cos(pitch)};
+ };
+ const base={x:0,y:0,z:0};
+ const axis=(to,name,color)=>{
+  const a=rotate(base),b=rotate(to);
+  el('line',{x1:a.x,y1:a.y,x2:b.x,y2:b.y,stroke:color,'stroke-width':1.5,'stroke-opacity':'.7'});
+  const t=el('text',{x:b.x+5,y:b.y-6,fill:color,'font-size':12});t.textContent=name;
+ };
+ axis({x:130,y:0,z:0},'LP / RANK','#9bd4ca');
+ axis({x:0,y:100,z:0},'Δ LP','#d1adbd');
+ axis({x:0,y:0,z:155},'TEMPO','#a7bce6');
+ if(!shown.length){note.textContent='Nessuna osservazione disponibile: la traiettoria non viene simulata.';return;}
+ const projected=coords.slice(0,shown.length).map(rotate);
+ if(projected.length>1){
+  el('path',{d:projected.map((p,i)=>(i?'L':'M')+p.x.toFixed(1)+' '+p.y.toFixed(1)).join(' '),
+  fill:'none',stroke:'#a6ead5','stroke-width':3,'stroke-linecap':'round','stroke-linejoin':'round'});
+ }
+ projected.forEach((v,i)=>{
+  const circle=el('circle',{cx:v.x,cy:v.y,r:i===projected.length-1?6:4,fill:i===projected.length-1?'#c9f3df':'#86c8bc',stroke:'#173143','stroke-width':2});
+  const title=el('title',{},circle);title.textContent='Osservazione '+(i+1)+' · '+shown[i].lp+' LP · '+(shown[i].tier||'Lega non verificata');
+ });
+ const last=shown[shown.length-1];
+ note.textContent='Osservazioni '+shown.length+'/'+dimensionalPoints.length+' · ultima: '+last.lp+' LP ('+(last.tier?last.tier+' '+(last.division||''):'lega non verificata')+') · '+(shown.length<2?'un punto non definisce una traiettoria':'traiettoria da osservazioni cronologiche; le rilevazioni mancanti non sono ricostruite')+'.';
+}
+function setDimensionalPoints(pts){
+ dimensionalPoints=pts.filter(p=>Number.isFinite(p.lp)).map(p=>({lp:p.lp,tier:p.tier||null,division:p.division||null,at:p.at}));
+ const step=document.getElementById('dimensional-step');
+ step.max=String(Math.max(1,dimensionalPoints.length));step.value=step.max;
+ drawDimensionalTrace();
+}
+for(const id of ['dimensional-yaw','dimensional-pitch','dimensional-step'])document.getElementById(id).addEventListener('input',drawDimensionalTrace);
+document.getElementById('dimensional-reset').addEventListener('click',()=>{
+ document.getElementById('dimensional-yaw').value='-36';document.getElementById('dimensional-pitch').value='23';drawDimensionalTrace();
+});
 async function loadRankHistory(){
  const svg=document.getElementById('lp-chart'),v=document.getElementById('lp-value'),tier=document.getElementById('lp-tier'),note=document.getElementById('lp-note');
  try{
@@ -358,6 +432,7 @@ async function loadRankHistory(){
   const data=await response.json();
   if(data.status!=='ok')throw Error('unavailable');
   const pts=(data.points||[]).filter(p=>Number.isFinite(p.lp));
+   setDimensionalPoints(pts);
    const meter=document.getElementById('lp-meter'),fill=document.getElementById('lp-fill'),ghost=document.getElementById('lp-ghost'),before=document.getElementById('lp-before'),delta=document.getElementById('lp-delta');
    const sameRank=(a,b)=>a&&b&&a.tier===b.tier&&a.division===b.division;
    const bounded=n=>Math.max(0,Math.min(100,Number(n)||0));
@@ -395,7 +470,7 @@ async function loadRankHistory(){
   if(pts.length>1)add('text',{x:X(pts.length-1),y:H-8,'text-anchor':'end'},'ULTIMO PUNTO');
   add('text',{x:X(pts.length-1)+10,y:Y(last.lp)-10},last.lp+' LP');
   note.textContent=pts.length===1?'Punto iniziale: 21 LP comunicati da daxs. Nessun LP precedente inventato.':'LP rilevati, in ordine cronologico. Nessuna ricostruzione delle partite senza dati.';
- }catch(e){v.textContent='—';note.textContent='Storico rank temporaneamente non disponibile.';}
+ }catch(e){setDimensionalPoints([]);v.textContent='—';note.textContent='Storico rank temporaneamente non disponibile.';}
 }
 
 async function loadCurrentRank(){
