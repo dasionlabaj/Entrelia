@@ -30,9 +30,48 @@ footer{border-top:1px solid #9ab3ce23;padding-top:1.5rem;font-family:ui-monospac
 .archive-signal strong{font:600 clamp(1rem,3vw,1.5rem)/1.5 ui-monospace,Consolas,monospace;color:#a8f2e2;display:block}
 @media(max-width:580px){main{padding:0 1rem 3rem}.observatory-top{font-size:.58rem}.hero-orbit{width:168px;height:168px;margin:2.4rem auto 1.2rem;transform:scale(.8)}.hero-eyebrow{font-size:.6rem;letter-spacing:.12em}h1{letter-spacing:.06em}.archive-signal{gap:.25rem;padding:.5rem}.archive-signal div{padding:.25rem}}
 @media(prefers-reduced-motion:no-preference){.orbit-a{animation:obs-turn 34s linear infinite}.orbit-b{animation:obs-turn-back 42s linear infinite}@keyframes obs-turn{to{transform:rotate(335deg)}}@keyframes obs-turn-back{to{transform:rotate(-302deg)}}}
-.trend-panel{margin:1.4rem 0;padding:1.3rem;border:1px solid #537d88;border-radius:12px;background:linear-gradient(135deg,#0b2534,#191e40);text-align:left}.trend-heading{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}.trend-heading h3{font-size:1.4rem;margin:.25rem 0 0}.trend-kicker{font:600 .7rem ui-monospace,Consolas,monospace;color:#9de8d6;letter-spacing:.14em}.trend-heading #trend-record{font:600 .9rem ui-monospace,Consolas,monospace;color:#d4e7ff}#trend-chart{display:block;width:100%;height:auto;min-height:130px;margin-top:.8rem;overflow:visible}#trend-note{font-size:.82rem;color:#acbdd2;line-height:1.5;margin:.3rem 0 0}.trend-panel text{font:12px ui-monospace,Consolas,monospace;fill:#b8cadc}</style></head><body><main>
+.trend-panel{margin:1.4rem 0;padding:1.3rem;border:1px solid #537d88;border-radius:12px;background:linear-gradient(135deg,#0b2534,#191e40);text-align:left}.trend-heading{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}.trend-heading h3{font-size:1.4rem;margin:.25rem 0 0}.trend-kicker{font:600 .7rem ui-monospace,Consolas,monospace;color:#9de8d6;letter-spacing:.14em}.trend-heading #trend-record{font:600 .9rem ui-monospace,Consolas,monospace;color:#d4e7ff}#trend-chart{display:block;width:100%;height:auto;min-height:130px;margin-top:.8rem;overflow:visible}#trend-note{font-size:.82rem;color:#acbdd2;line-height:1.5;margin:.3rem 0 0}.trend-panel text{font:12px ui-monospace,Consolas,monospace;fill:#b8cadc}
+/* Entrelia / Atlas 0.3 — spacetime geometry, typography, team identity */
+:root{--deep-field:#060c19;--time-grid:#8d9ecb;--blue-team:#5baaff;--red-team:#ff738c}
+body{background:radial-gradient(ellipse at 50% 30%,#1b3552 0%,transparent 48%),radial-gradient(ellipse at 4% 100%,#282042 0%,transparent 43%),radial-gradient(ellipse at 94% 80%,#123947 0%,transparent 51%),var(--deep-field);isolation:isolate}
+body:before{z-index:-2;background-image:linear-gradient(90deg,#bed3fc10 1px,transparent 1px),linear-gradient(#bed3fc10 1px,transparent 1px);background-size:53px 53px;mask-image:radial-gradient(ellipse at center,#000a,transparent 88%);transform:perspective(740px) rotateX(46deg) scale(1.65);transform-origin:center 20%;opacity:.68}
+body:after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(ellipse at 50% 25%,transparent 7%,#060c1940 48%,#060c19bd 95%);box-shadow:inset 0 0 190px #02071060}
+main{position:relative;z-index:1}
+.hero-orbit{perspective:750px;filter:drop-shadow(0 0 28px #6fe9da2c)}
+.hero-orbit:after{content:"";position:absolute;width:158px;height:158px;border:1px solid #b2c3ed30;border-radius:50%;transform:rotateX(72deg) rotateZ(-16deg)}
+.orbit{border-width:1.5px;box-shadow:inset 0 0 16px #8cead815}
+.orbit-a{border-color:#8de5dc92;transform:rotate(-25deg)}
+.orbit-b{border-color:#aa97ec8c}
+.orbit-c{border-color:#acc5ef47}
+.electron{position:absolute;width:7px;height:7px;border-radius:50%;background:#e6fff9;box-shadow:0 0 9px 3px #78ecdc8e;z-index:2}
+.electron-a{top:77px;left:21px}.electron-b{right:20px;bottom:77px;background:#bbadff;box-shadow:0 0 9px 3px #bbadff88}
+.atlas-sigil{filter:drop-shadow(0 0 14px #68eada65)}
+h1{font-family:"Arial Narrow","Bahnschrift",Arial,system-ui,sans-serif;font-stretch:condensed;font-weight:530;letter-spacing:.145em;line-height:1.08;text-shadow:0 0 32px #b9d6fa1b}
+h1 .period{font-size:.7em;vertical-align:10%}
+.hero-eyebrow,.sub,.signal,.corner-brand,.trend-kicker,.archive-signal small,.team h4{font-family:ui-monospace,SFMono-Regular,Consolas,"Liberation Mono",monospace;font-weight:500;letter-spacing:.16em}
+.hero-eyebrow{color:#d0e2ed}
+p.hero-copy{color:#c4d2e1;letter-spacing:.02em;font-weight:350}
+.panel h2,.trend-heading h3{font-family:"Bahnschrift", "Segoe UI",system-ui,sans-serif;font-weight:550;letter-spacing:.04em}
+.module strong{letter-spacing:.06em}
+.team{position:relative;overflow:hidden;border-width:1.5px;box-shadow:inset 0 1px 0 #ffffff08}
+.team-blue{border-color:#4396ee9c;background:linear-gradient(150deg,#102c50,#0e1932 72%);box-shadow:inset 3px 0 #5baaff,0 0 15px #257be60a}
+.team-red{border-color:#f46c8aa1;background:linear-gradient(150deg,#421d38,#22172e 72%);box-shadow:inset 3px 0 #ff738c,0 0 15px #f5496a0a}
+.team h4{padding:.25rem .2rem .4rem;font-size:.85rem}
+.team-blue h4{color:#91caff}.team-red h4{color:#ffb0c1}
+.team-blue .player-row{background:#172d4c;border-color:#4674a43b}
+.team-red .player-row{background:#352039;border-color:#ac5a743a}
+.team-blue .player-row:hover,.team-blue .player-row[aria-pressed="true"]{border-color:#70b7ff;background:#1d4567}
+.team-red .player-row:hover,.team-red .player-row[aria-pressed="true"]{border-color:#ff92a8;background:#593047}
+.team-blue .player-meter i{background:#69adff}
+.team-red .player-meter i{background:#ff8198}
+.team-blue .player-row[aria-pressed="true"] .player-meter i{background:#a3d4ff}
+.team-red .player-row[aria-pressed="true"] .player-meter i{background:#ffc0cb}
+.trend-panel{background:linear-gradient(140deg,#102b39,#191e3e 76%);border-color:#6a8b9a}
+@media(max-width:580px){h1{letter-spacing:.075em}.electron-a{left:-17px}.electron-b{right:-16px}}
+@media(prefers-reduced-motion:reduce){.orbit{animation:none!important}}
+</style></head><body><main>
 <div class="observatory-top"><a class="corner-brand" href="/" aria-label="Entrelia, home"><span class="mini-mark" aria-hidden="true">✧</span> E / ATLAS</a><span class="signal"><i></i> OBSERVATORY · 001</span></div>
-<div class="hero-orbit" aria-hidden="true"><div class="orbit orbit-a"></div><div class="orbit orbit-b"></div><div class="orbit orbit-c"></div><svg class="atlas-sigil" width="118" height="118" viewBox="0 0 118 118" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M59 8L108 59L59 110L10 59L59 8Z" stroke="currentColor" stroke-width="1.5"/><path d="M59 25L93 59L59 93L25 59L59 25Z" stroke="currentColor" stroke-opacity=".58"/><path d="M59 8V110M10 59H108" stroke="currentColor" stroke-opacity=".38"/><circle cx="59" cy="59" r="8" fill="currentColor"/><circle cx="59" cy="59" r="20" stroke="currentColor" stroke-opacity=".7"/></svg></div>
+<div class="hero-orbit" aria-hidden="true"><div class="orbit orbit-a"></div><div class="orbit orbit-b"></div><div class="orbit orbit-c"></div><div class="electron electron-a"></div><div class="electron electron-b"></div><svg class="atlas-sigil" width="118" height="118" viewBox="0 0 118 118" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M59 8L108 59L59 110L10 59L59 8Z" stroke="currentColor" stroke-width="1.5"/><path d="M59 25L93 59L59 93L25 59L59 25Z" stroke="currentColor" stroke-opacity=".58"/><path d="M59 8V110M10 59H108" stroke="currentColor" stroke-opacity=".38"/><circle cx="59" cy="59" r="8" fill="currentColor"/><circle cx="59" cy="59" r="20" stroke="currentColor" stroke-opacity=".7"/></svg></div>
 <div class="hero-eyebrow">UN UNIVERSO DA OSSERVARE, NON SOLTANTO DA VISITARE</div>
 <h1>ENTRELIA<span class="period">.</span></h1><div class="sub">Powered by Atlas · Digital Observatory</div><p class="hero-copy">Ogni dato è una traccia. Ogni traccia, una storia.<br>Entra nell'osservatorio.</p><section id="welcome"><button class="action" id="enter" type="button">Enter Entrelia →</button></section><section id="hub" class="panel" hidden><h2>Esplora Entrelia</h2><p>Il nostro universo prende forma, un modulo alla volta.</p><button id="analyst" class="module" type="button"><strong>LoL Analyst →</strong><span>Uno spazio dedicato all'analisi delle partite di League of Legends.</span></button><button class="back" id="home-from-hub" type="button">← Torna alla pagina iniziale</button></section><section id="analyst-view" class="panel" hidden><h2>LoL Analyst</h2><p>Le ultime 10 partite reali di <strong>daxs#EUW</strong>.</p><p id="lol-status" class="status" role="status" aria-live="polite">Apri il modulo per caricare le partite.</p><div id="archive-signal" class="archive-signal" aria-live="polite"><div><small>OGGI · DAX</small><strong id="archive-today">—</strong></div><div><small>DAL 08/11</small><strong id="archive-total">—</strong></div><div><small>ARCHIVIO</small><strong id="archive-all">—</strong></div></div><section class="trend-panel" aria-label="Andamento partite classificate"><div class="trend-heading"><div><span class="trend-kicker">ATLAS / PERFORMANCE TRACE</span><h3>La curva di Dax</h3></div><span id="trend-record">Caricamento…</span></div><svg id="trend-chart" viewBox="0 0 640 205" role="img" aria-label="Andamento delle vittorie nette di Dax partita dopo partita" preserveAspectRatio="xMidYMid meet"><title>Andamento partite classificate</title></svg><p id="trend-note">Vittorie cumulative meno sconfitte. Non sono LP né progressi di lega.</p></section><div id="lol-summary" class="summary-stats" hidden></div><div id="lol-matches" class="match-list" aria-live="polite"></div><button type="button" class="action" id="lol-refresh">Aggiorna partite ↻</button><button class="back" id="back-to-hub" type="button">← Torna ai moduli</button></section><footer>Coming soon</footer></main><script>const welcome=document.getElementById('welcome'),hub=document.getElementById('hub'),analystView=document.getElementById('analyst-view');function show(view){welcome.hidden=view!=='welcome';hub.hidden=view!=='hub';analystView.hidden=view!=='analyst';}document.getElementById('enter').addEventListener('click',()=>show('hub'));document.getElementById('analyst').addEventListener('click',()=>{show('analyst');loadMatches();loadArchiveCounters();loadTrend()});document.getElementById('home-from-hub').addEventListener('click',()=>show('welcome'));document.getElementById('back-to-hub').addEventListener('click',()=>show('hub'));const status=document.getElementById('lol-status'),matches=document.getElementById('lol-matches'),summary=document.getElementById('lol-summary');
 const fmt=v=>Number.isFinite(v)?v.toLocaleString('it-IT'):'—';
@@ -153,8 +192,8 @@ function matchComparison(match){
   teams.replaceChildren();
   const max=Math.max(1,...match.participants.map(p=>Number(p[metric])||0));
   for(const id of [100,200]){
-   const team=document.createElement('div');team.className='team';
-   const label=document.createElement('h4');label.textContent='Squadra '+(id===100?'blu':'rossa');team.append(label);
+   const team=document.createElement('div');team.className='team '+(id===100?'team-blue':'team-red');
+   const label=document.createElement('h4');label.textContent=(id===100?'● BLU':'● ROSSA');team.append(label);
    match.participants.filter(p=>p.teamId===id).forEach(p=>{
     const row=document.createElement('button');row.type='button';row.className='player-row';
     row.setAttribute('aria-pressed',String(selected===p.puuid));
