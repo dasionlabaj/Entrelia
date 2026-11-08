@@ -84,6 +84,7 @@ async function loadMatches(){
    expand.append(label,detailedDamage(match),grid);
    if(Array.isArray(match.items)){const items=document.createElement('span');items.textContent='ID oggetti: '+match.items.filter(v=>Number.isInteger(v)&&v>0).join(' · ');expand.append(items);}
    article.append(expand);matches.append(article);
+   if(match===data.matches[0])comparison?.querySelector('.rank-load')?.click();
   }
  }catch(e){status.textContent='Non riesco a contattare il servizio Riot in questo momento.';}
 }
@@ -136,7 +137,7 @@ function matchComparison(match){
   const player=match.participants.find(p=>p.puuid===selected)||match.participants[0];
   detail.textContent=player.champion+' · '+player.name+' · '+rankOf(player)+' · Danni '+fmt(player.damageDealt)+' · Subiti '+fmt(player.damageTaken)+' · Oro '+fmt(player.gold)+' · CS '+fmt(player.cs)+' · Visione '+fmt(player.vision)+' · Obiettivi '+fmt(player.objectiveDamage);
  }
- const open=document.createElement('button');open.type='button';open.className='back';open.textContent='Carica i rank attuali ↻';
+ const open=document.createElement('button');open.type='button';open.className='back rank-load';open.textContent='Carica i rank attuali ↻';
  open.addEventListener('click',async()=>{
   if(rankCache.has(match.id)){ranks=rankCache.get(match.id);note.textContent='Rank Solo/Duo attuali · non riferiti alla data della partita.';render();return;}
   open.disabled=true;note.textContent='Recupero rank attuali…';
