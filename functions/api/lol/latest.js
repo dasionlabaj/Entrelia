@@ -17,7 +17,20 @@ export async function onRequestGet({env}){
       const game=await riot("/lol/match/v5/matches/"+encodeURIComponent(id),env.RIOT_API_KEY);
       const p=game.info?.participants?.find(p=>p.puuid===account.puuid);
       if(!p)return null;
-      return {id,champion:p.championName,kills:p.kills,deaths:p.deaths,assists:p.assists,damageDealt:p.totalDamageDealtToChampions,damageTaken:p.totalDamageTaken,physicalDamageTaken:p.physicalDamageTaken,magicDamageTaken:p.magicDamageTaken,trueDamageTaken:p.trueDamageTaken,totalDamageDealt:p.totalDamageDealt,totalPhysicalDamageDealt:p.physicalDamageDealt,totalMagicDamageDealt:p.magicDamageDealt,totalTrueDamageDealt:p.trueDamageDealt,damageSelfMitigated:p.damageSelfMitigated,totalHealsOnTeammates:p.totalHealsOnTeammates,physicalDamage:p.physicalDamageDealtToChampions,magicDamage:p.magicDamageDealtToChampions,trueDamage:p.trueDamageDealtToChampions,gold:p.goldEarned,cs:(p.totalMinionsKilled||0)+(p.neutralMinionsKilled||0),vision:p.visionScore,wardsPlaced:p.wardsPlaced,wardsKilled:p.wardsKilled,healing:p.totalHeal,shielding:p.totalDamageShieldedOnTeammates,ccSeconds:p.timeCCingOthers,turretDamage:p.damageDealtToTurrets,objectiveDamage:p.damageDealtToObjectives,level:p.champLevel,position:p.teamPosition,items:[p.item0,p.item1,p.item2,p.item3,p.item4,p.item5,p.item6],win:p.win,mode:game.info.gameMode,durationSeconds:game.info.gameDuration,startedAt:game.info.gameStartTimestamp,queueId:game.info.queueId};
+      const participants=(game.info?.participants||[]).map(player=>({
+        puuid:player.puuid,teamId:player.teamId,champion:player.championName,
+        name:player.riotIdGameName||player.summonerName||"Giocatore",
+        tag:player.riotIdTagline||"",kills:player.kills,deaths:player.deaths,
+        assists:player.assists,win:player.win,
+        damageDealt:player.totalDamageDealtToChampions,damageTaken:player.totalDamageTaken,
+        physicalDamage:player.physicalDamageDealtToChampions,
+        magicDamage:player.magicDamageDealtToChampions,trueDamage:player.trueDamageDealtToChampions,
+        gold:player.goldEarned,cs:(player.totalMinionsKilled||0)+(player.neutralMinionsKilled||0),
+        vision:player.visionScore,wardsPlaced:player.wardsPlaced,wardsKilled:player.wardsKilled,
+        healing:player.totalHeal,shielding:player.totalDamageShieldedOnTeammates,
+        turretDamage:player.damageDealtToTurrets,objectiveDamage:player.damageDealtToObjectives
+      }));
+      return {participants,teamId:p.teamId,puuid:account.puuid,id,champion:p.championName,kills:p.kills,deaths:p.deaths,assists:p.assists,damageDealt:p.totalDamageDealtToChampions,damageTaken:p.totalDamageTaken,physicalDamageTaken:p.physicalDamageTaken,magicDamageTaken:p.magicDamageTaken,trueDamageTaken:p.trueDamageTaken,totalDamageDealt:p.totalDamageDealt,totalPhysicalDamageDealt:p.physicalDamageDealt,totalMagicDamageDealt:p.magicDamageDealt,totalTrueDamageDealt:p.trueDamageDealt,damageSelfMitigated:p.damageSelfMitigated,totalHealsOnTeammates:p.totalHealsOnTeammates,physicalDamage:p.physicalDamageDealtToChampions,magicDamage:p.magicDamageDealtToChampions,trueDamage:p.trueDamageDealtToChampions,gold:p.goldEarned,cs:(p.totalMinionsKilled||0)+(p.neutralMinionsKilled||0),vision:p.visionScore,wardsPlaced:p.wardsPlaced,wardsKilled:p.wardsKilled,healing:p.totalHeal,shielding:p.totalDamageShieldedOnTeammates,ccSeconds:p.timeCCingOthers,turretDamage:p.damageDealtToTurrets,objectiveDamage:p.damageDealtToObjectives,level:p.champLevel,position:p.teamPosition,items:[p.item0,p.item1,p.item2,p.item3,p.item4,p.item5,p.item6],win:p.win,mode:game.info.gameMode,durationSeconds:game.info.gameDuration,startedAt:game.info.gameStartTimestamp,queueId:game.info.queueId};
     }));
     return json({status:"ok",account:"daxs#EUW",matches:matches.filter(Boolean)});
   }catch(error){
