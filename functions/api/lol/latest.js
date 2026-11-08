@@ -1,3 +1,4 @@
+import { recordError, recordEvent } from "../../lib/atlas-observability.js";
 // Cloudflare Pages Function: GET /api/lol/latest
 // Reads the Riot key only from the server-side RIOT_API_KEY environment secret.
 const json=(data,status=200)=>new Response(JSON.stringify(data),{status,headers:{"Content-Type":"application/json; charset=utf-8","Cache-Control":status===200?"public, max-age=60":"no-store","X-Content-Type-Options":"nosniff"}});
@@ -47,14 +48,17 @@ export async function onRequestGet({env}){
           await env.ATLAS_DB.batch(statements);
         }
         archive={status:"ok",observed:validMatches.length};
+        if(validMatches.length)await recordEvent(env,"match-"+validMatches[0].id,"match_observed","riot_sync","Latest match observed and archive write completed");
       }catch(e){
         console.error("Atlas D1 archive insert failed",e);
         archive={status:"unavailable"};
+        await recordError(env,"archive","insert_failed");
       }
     }
     return json({status:"ok",account:"daxs#EUW",matches:validMatches,archive});
   }catch(error){
     const s=error.status;
+    await recordError(env,"riot_latest",s===429?"rate_limited":s===401||s===403?"auth_error":s===404?"not_found":"upstream_error");
     if(s===401||s===403)return json({status:"riot_key_invalid",message:"La chiave Riot non è valida o è scaduta."},503);
     if(s===404)return json({status:"not_found",message:"Account Riot o partite non trovati."},404);
     if(s===429)return json({status:"rate_limited",message:"Limite Riot raggiunto: riprova tra poco."},429);
