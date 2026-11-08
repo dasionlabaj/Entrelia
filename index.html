@@ -106,6 +106,9 @@ p.hero-copy{color:#c4d2e1;letter-spacing:.02em;font-weight:350}
 #dimensional-scene{display:block;width:100%;height:auto;max-height:510px;min-height:260px;margin:.6rem 0;background:linear-gradient(155deg,#0b1a2d,#102238);border-radius:8px;touch-action:none;cursor:grab;user-select:none}
 #dimensional-scene:active{cursor:grabbing}
 .dimensional-instrument{display:flex;gap:.75rem;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.dimensional-modes{display:flex;gap:.4rem;flex-wrap:wrap}
+.dimensional-modes .back{margin:0;padding:.45rem .7rem;font-size:.72rem}
+.dimensional-modes [aria-pressed="true"]{border-color:#a6e6d2;color:#d6faea;background:#1e3c47}
 .dimensional-dials{display:flex;gap:.6rem;align-items:center}
 .dimensional-dials svg{width:67px;height:67px;flex:none}
 .dimensional-hint{font: .75rem/1.4 ui-monospace,Consolas,monospace;color:#b9c8d8}
@@ -140,7 +143,7 @@ p.hero-copy{color:#c4d2e1;letter-spacing:.02em;font-weight:350}
 <div class="observatory-top"><a class="corner-brand" href="/" aria-label="Entrelia, home"><span class="mini-mark" aria-hidden="true">✧</span> E / ATLAS</a><span class="signal"><i></i> OBSERVATORY · 001</span></div>
 <div class="hero-orbit" aria-hidden="true"><div class="orbit orbit-a"></div><div class="orbit orbit-b"></div><div class="orbit orbit-c"></div><div class="electron electron-a"></div><div class="electron electron-b"></div><svg class="atlas-sigil" width="118" height="118" viewBox="0 0 118 118" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M59 8L108 59L59 110L10 59L59 8Z" stroke="currentColor" stroke-width="1.5"/><path d="M59 25L93 59L59 93L25 59L59 25Z" stroke="currentColor" stroke-opacity=".58"/><path d="M59 8V110M10 59H108" stroke="currentColor" stroke-opacity=".38"/><circle cx="59" cy="59" r="8" fill="currentColor"/><circle cx="59" cy="59" r="20" stroke="currentColor" stroke-opacity=".7"/></svg></div>
 <div class="hero-eyebrow">UN UNIVERSO DA OSSERVARE, NON SOLTANTO DA VISITARE</div>
-<h1>ENTRELIA<span class="period">.</span></h1><div class="sub">Powered by Atlas · Digital Observatory</div><p class="hero-copy">Ogni dato è una traccia. Ogni traccia, una storia.<br>Entra nell'osservatorio.</p><section id="welcome"><button class="action" id="enter" type="button">Enter Entrelia →</button></section><section id="hub" class="panel" hidden><h2>Esplora Entrelia</h2><p>Il nostro universo prende forma, un modulo alla volta.</p><button id="analyst" class="module" type="button"><strong>LoL Analyst →</strong><span>Uno spazio dedicato all'analisi delle partite di League of Legends.</span></button><button class="back" id="home-from-hub" type="button">← Torna alla pagina iniziale</button></section><section id="analyst-view" class="panel" hidden><h2>LoL Analyst</h2><p>Le ultime 20 partite reali di <strong>daxs#EUW</strong>.</p><p id="lol-status" class="status" role="status" aria-live="polite">Apri il modulo per caricare le partite.</p><div id="archive-signal" class="archive-signal" aria-live="polite"><div><small>OGGI · DAX</small><strong id="archive-today">—</strong></div><div><small>DAL 08/11</small><strong id="archive-total">—</strong></div><div><small>ARCHIVIO</small><strong id="archive-all">—</strong></div></div><section class="trend-panel" aria-label="Andamento partite classificate"><div class="trend-heading"><div><span class="trend-kicker">ATLAS / PERFORMANCE TRACE</span><h3>La curva di daxs</h3></div><span id="trend-record">Caricamento…</span></div><svg id="trend-chart" viewBox="0 0 640 205" role="img" aria-label="Andamento delle vittorie nette di Dax partita dopo partita" preserveAspectRatio="xMidYMid meet"><title>Andamento partite classificate</title></svg><p id="trend-note">Vittorie cumulative meno sconfitte. Non sono LP né progressi di lega.</p></section><section class="lp-panel" aria-label="Storico LP osservati di daxs"><div class="lp-heading"><div class="lp-badge" aria-hidden="true"><svg viewBox="0 0 64 72" width="55" height="62"><path d="M32 3 59 16 54 48 32 67 10 48 5 16Z" fill="#1a293d" stroke="#9ed7ca" stroke-width="2"/><path d="M32 13 46 22 43 43 32 54 21 43 18 22Z" fill="none" stroke="#8eaaee" stroke-width="1.5"/><path d="M32 21 40 35 32 43 24 35Z" fill="#97dccc"/></svg></div><div><span class="trend-kicker">ATLAS / RANK TRACE</span><h3>daxs · Solo/Duo</h3><p id="lp-tier">Lega da verificare</p><p id="lp-current-riot" aria-live="polite">Rank Riot: caricamento…</p></div><div class="lp-current"><strong id="lp-value">—</strong><small>LP · punto storico</small></div></div><div class="lp-meter" role="progressbar" aria-label="LP nella divisione attuale" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="lp-meter"><div class="lp-ghost" id="lp-ghost"></div><div class="lp-fill" id="lp-fill"></div></div><div class="lp-meter-label"><span id="lp-before">In attesa di rilevazioni</span><span id="lp-delta" aria-live="polite">—</span></div><section class="dimensional-trace" aria-label="Traiettoria tridimensionale degli LP"><div class="dimensional-heading"><strong>ATLAS / DIMENSIONAL RANK TRACE</strong><small>Osservazioni reali · nessuna interpolazione dei dati mancanti</small></div><div class="dimensional-instrument"><span class="dimensional-hint">Trascina il grafico per orientarlo · cursori di precisione sotto</span><div class="dimensional-dials"><svg viewBox="0 0 70 70" role="img" aria-label="Quadrante rotazione orizzontale"><circle cx="35" cy="35" r="29" fill="#14283a" stroke="#6a8998" stroke-width="2"/><circle cx="35" cy="35" r="22" fill="none" stroke="#567887" stroke-dasharray="2 5"/><g id="dimensional-yaw-needle"><path d="M35 10L40 39L35 34L30 39Z" fill="#a6e6d2"/></g><circle cx="35" cy="35" r="4" fill="#c6d6da"/><text x="35" y="61" fill="#bad5db" text-anchor="middle" font-size="9">YAW</text></svg><svg viewBox="0 0 70 70" role="img" aria-label="Quadrante inclinazione verticale"><circle cx="35" cy="35" r="29" fill="#14283a" stroke="#6a8998" stroke-width="2"/><circle cx="35" cy="35" r="22" fill="none" stroke="#567887" stroke-dasharray="2 5"/><g id="dimensional-pitch-needle"><path d="M35 10L40 39L35 34L30 39Z" fill="#c4b1da"/></g><circle cx="35" cy="35" r="4" fill="#c6d6da"/><text x="35" y="61" fill="#bad5db" text-anchor="middle" font-size="9">TILT</text></svg></div></div><svg id="dimensional-scene" viewBox="0 0 640 410" role="img" aria-label="Proiezione tridimensionale orientabile dello storico LP" preserveAspectRatio="xMidYMid meet"><title>Traiettoria delle osservazioni LP</title></svg><div class="dimensional-controls"><label>Rotazione <input id="dimensional-yaw" aria-label="Rotazione orizzontale della scena" type="range" min="-180" max="180" value="-36"></label><label>Inclinazione <input id="dimensional-pitch" aria-label="Inclinazione della scena" type="range" min="-75" max="75" value="23"></label><label>Osservazioni <input id="dimensional-step" aria-label="Numero di osservazioni visualizzate" type="range" min="1" max="1" value="1"></label><button class="back" type="button" id="dimensional-reset">Vista iniziale</button></div><p id="dimensional-note" aria-live="polite">In attesa di osservazioni: nessuna traiettoria ricostruita.</p></section><svg id="lp-chart" viewBox="0 0 640 165" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Rilevazioni registrate degli LP di daxs."><title>Storico degli LP registrati</title></svg><p id="lp-note">Storico LP: i valori precedenti non vengono stimati.</p></section><div id="lol-summary" class="summary-stats" hidden></div><div id="lol-matches" class="match-list" aria-live="polite"></div><button type="button" class="action" id="lol-refresh">Aggiorna partite ↻</button><button class="back" id="back-to-hub" type="button">← Torna ai moduli</button></section><footer>Coming soon · <a href="mailto:contact@atlas-open-observatory.com" style="color:inherit;text-decoration:underline;text-underline-offset:4px">Contact us</a></footer></main><script>const welcome=document.getElementById('welcome'),hub=document.getElementById('hub'),analystView=document.getElementById('analyst-view');function show(view){welcome.hidden=view!=='welcome';hub.hidden=view!=='hub';analystView.hidden=view!=='analyst';}document.getElementById('enter').addEventListener('click',()=>show('hub'));document.getElementById('analyst').addEventListener('click',()=>{show('analyst');loadMatches();loadArchiveCounters();loadTrend();loadRankHistory();loadCurrentRank()});document.getElementById('home-from-hub').addEventListener('click',()=>show('welcome'));document.getElementById('back-to-hub').addEventListener('click',()=>show('hub'));const status=document.getElementById('lol-status'),matches=document.getElementById('lol-matches'),summary=document.getElementById('lol-summary');
+<h1>ENTRELIA<span class="period">.</span></h1><div class="sub">Powered by Atlas · Digital Observatory</div><p class="hero-copy">Ogni dato è una traccia. Ogni traccia, una storia.<br>Entra nell'osservatorio.</p><section id="welcome"><button class="action" id="enter" type="button">Enter Entrelia →</button></section><section id="hub" class="panel" hidden><h2>Esplora Entrelia</h2><p>Il nostro universo prende forma, un modulo alla volta.</p><button id="analyst" class="module" type="button"><strong>LoL Analyst →</strong><span>Uno spazio dedicato all'analisi delle partite di League of Legends.</span></button><button class="back" id="home-from-hub" type="button">← Torna alla pagina iniziale</button></section><section id="analyst-view" class="panel" hidden><h2>LoL Analyst</h2><p>Le ultime 20 partite reali di <strong>daxs#EUW</strong>.</p><p id="lol-status" class="status" role="status" aria-live="polite">Apri il modulo per caricare le partite.</p><div id="archive-signal" class="archive-signal" aria-live="polite"><div><small>OGGI · DAX</small><strong id="archive-today">—</strong></div><div><small>DAL 08/11</small><strong id="archive-total">—</strong></div><div><small>ARCHIVIO</small><strong id="archive-all">—</strong></div></div><section class="trend-panel" aria-label="Andamento partite classificate"><div class="trend-heading"><div><span class="trend-kicker">ATLAS / PERFORMANCE TRACE</span><h3>La curva di daxs</h3></div><span id="trend-record">Caricamento…</span></div><svg id="trend-chart" viewBox="0 0 640 205" role="img" aria-label="Andamento delle vittorie nette di Dax partita dopo partita" preserveAspectRatio="xMidYMid meet"><title>Andamento partite classificate</title></svg><p id="trend-note">Vittorie cumulative meno sconfitte. Non sono LP né progressi di lega.</p></section><section class="lp-panel" aria-label="Storico LP osservati di daxs"><div class="lp-heading"><div class="lp-badge" aria-hidden="true"><svg viewBox="0 0 64 72" width="55" height="62"><path d="M32 3 59 16 54 48 32 67 10 48 5 16Z" fill="#1a293d" stroke="#9ed7ca" stroke-width="2"/><path d="M32 13 46 22 43 43 32 54 21 43 18 22Z" fill="none" stroke="#8eaaee" stroke-width="1.5"/><path d="M32 21 40 35 32 43 24 35Z" fill="#97dccc"/></svg></div><div><span class="trend-kicker">ATLAS / RANK TRACE</span><h3>daxs · Solo/Duo</h3><p id="lp-tier">Lega da verificare</p><p id="lp-current-riot" aria-live="polite">Rank Riot: caricamento…</p></div><div class="lp-current"><strong id="lp-value">—</strong><small>LP · punto storico</small></div></div><div class="lp-meter" role="progressbar" aria-label="LP nella divisione attuale" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="lp-meter"><div class="lp-ghost" id="lp-ghost"></div><div class="lp-fill" id="lp-fill"></div></div><div class="lp-meter-label"><span id="lp-before">In attesa di rilevazioni</span><span id="lp-delta" aria-live="polite">—</span></div><section class="dimensional-trace" aria-label="Traiettoria tridimensionale degli LP"><div class="dimensional-heading"><strong>ATLAS / DIMENSIONAL RANK TRACE</strong><small>Osservazioni reali · nessuna interpolazione dei dati mancanti</small></div><div class="dimensional-instrument"><span class="dimensional-hint">Trascina per esplorare · due modi di osservare la stessa traiettoria</span><div class="dimensional-modes" role="group" aria-label="Modalità dello spazio"><button type="button" id="dimensional-spatial" class="back" aria-pressed="true">Spaziale</button><button type="button" id="dimensional-structural" class="back" aria-pressed="false">Strutturale</button></div><div class="dimensional-dials"><svg viewBox="0 0 70 70" role="img" aria-label="Quadrante rotazione orizzontale"><circle cx="35" cy="35" r="29" fill="#14283a" stroke="#6a8998" stroke-width="2"/><circle cx="35" cy="35" r="22" fill="none" stroke="#567887" stroke-dasharray="2 5"/><g id="dimensional-yaw-needle"><path d="M35 10L40 39L35 34L30 39Z" fill="#a6e6d2"/></g><circle cx="35" cy="35" r="4" fill="#c6d6da"/><text x="35" y="61" fill="#bad5db" text-anchor="middle" font-size="9">YAW</text></svg><svg viewBox="0 0 70 70" role="img" aria-label="Quadrante inclinazione verticale"><circle cx="35" cy="35" r="29" fill="#14283a" stroke="#6a8998" stroke-width="2"/><circle cx="35" cy="35" r="22" fill="none" stroke="#567887" stroke-dasharray="2 5"/><g id="dimensional-pitch-needle"><path d="M35 10L40 39L35 34L30 39Z" fill="#c4b1da"/></g><circle cx="35" cy="35" r="4" fill="#c6d6da"/><text x="35" y="61" fill="#bad5db" text-anchor="middle" font-size="9">TILT</text></svg></div></div><svg id="dimensional-scene" viewBox="0 0 640 410" role="img" aria-label="Proiezione tridimensionale orientabile dello storico LP" preserveAspectRatio="xMidYMid meet"><title>Traiettoria delle osservazioni LP</title></svg><div class="dimensional-controls"><label>Rotazione <input id="dimensional-yaw" aria-label="Rotazione orizzontale della scena" type="range" min="-180" max="180" value="-36"></label><label>Inclinazione <input id="dimensional-pitch" aria-label="Inclinazione della scena" type="range" min="-75" max="75" value="23"></label><label>Osservazioni <input id="dimensional-step" aria-label="Numero di osservazioni visualizzate" type="range" min="1" max="1" value="1"></label><button class="back" type="button" id="dimensional-reset">Vista iniziale</button></div><p id="dimensional-note" aria-live="polite">In attesa di osservazioni: nessuna traiettoria ricostruita.</p></section><svg id="lp-chart" viewBox="0 0 640 165" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Rilevazioni registrate degli LP di daxs."><title>Storico degli LP registrati</title></svg><p id="lp-note">Storico LP: i valori precedenti non vengono stimati.</p></section><div id="lol-summary" class="summary-stats" hidden></div><div id="lol-matches" class="match-list" aria-live="polite"></div><button type="button" class="action" id="lol-refresh">Aggiorna partite ↻</button><button class="back" id="back-to-hub" type="button">← Torna ai moduli</button></section><footer>Coming soon · <a href="mailto:contact@atlas-open-observatory.com" style="color:inherit;text-decoration:underline;text-underline-offset:4px">Contact us</a></footer></main><script>const welcome=document.getElementById('welcome'),hub=document.getElementById('hub'),analystView=document.getElementById('analyst-view');function show(view){welcome.hidden=view!=='welcome';hub.hidden=view!=='hub';analystView.hidden=view!=='analyst';}document.getElementById('enter').addEventListener('click',()=>show('hub'));document.getElementById('analyst').addEventListener('click',()=>{show('analyst');loadMatches();loadArchiveCounters();loadTrend();loadRankHistory();loadCurrentRank()});document.getElementById('home-from-hub').addEventListener('click',()=>show('welcome'));document.getElementById('back-to-hub').addEventListener('click',()=>show('hub'));const status=document.getElementById('lol-status'),matches=document.getElementById('lol-matches'),summary=document.getElementById('lol-summary');
 const fmt=v=>Number.isFinite(v)?v.toLocaleString('it-IT'):'—';
 function stat(label,value){const box=document.createElement('div');box.className='stat';const a=document.createElement('small');a.textContent=label;const b=document.createElement('b');b.textContent=value;box.append(a,b);return box;}
 function damageChart(m){
@@ -367,6 +370,7 @@ async function loadTrend(){
 
 // Lightweight 3D orthographic projection. Time never reverses; historical LP may.
 let dimensionalPoints=[];
+let dimensionalMode='spatial';
 function drawDimensionalTrace(){
  const svg=document.getElementById('dimensional-scene'),note=document.getElementById('dimensional-note');
  const yaw=Number(document.getElementById('dimensional-yaw').value)*Math.PI/180;
@@ -377,73 +381,91 @@ function drawDimensionalTrace(){
  const shown=dimensionalPoints.slice(0,Math.max(0,Math.min(dimensionalPoints.length,Number(step.value)||1)));
  const NS='http://www.w3.org/2000/svg';svg.replaceChildren();
  const el=(tag,attrs,parent=svg)=>{const node=document.createElementNS(NS,tag);for(const [key,val] of Object.entries(attrs))node.setAttribute(key,String(val));parent.append(node);return node;};
+ const mode=dimensionalMode;
  const maxCount=Math.max(2,dimensionalPoints.length);
- // X: LP or tier-aware numerical rank, Y: observed delta, Z: chronological observation.
  const tierIndex={IRON:0,BRONZE:1,SILVER:2,GOLD:3,PLATINUM:4,EMERALD:5,DIAMOND:6,MASTER:7,GRANDMASTER:8,CHALLENGER:9};
  const divIndex={IV:0,III:1,II:2,I:3};
- const score=p=>p.tier&&tierIndex[p.tier.toUpperCase()]!==undefined?
- tierIndex[p.tier.toUpperCase()]*400+(divIndex[p.division]??0)*100+p.lp:p.lp;
- const values=dimensionalPoints.map(score),min=Math.min(0,...values),max=Math.max(100,...values);
- const extent=Math.max(60,max-min);
+ const score=p=>p.tier&&tierIndex[String(p.tier).toUpperCase()]!==undefined?
+ tierIndex[String(p.tier).toUpperCase()]*400+(divIndex[p.division]??0)*100+p.lp:p.lp;
+ const vals=dimensionalPoints.map(score),min=Math.min(0,...vals),max=Math.max(100,...vals),extent=Math.max(60,max-min);
  const coords=dimensionalPoints.map((p,i)=>{
-  const x=((score(p)-min)/extent-.5)*210;
   const prev=i?dimensionalPoints[i-1]:null;
   const comparable=prev&&prev.tier===p.tier&&prev.division===p.division;
   const delta=comparable?p.lp-prev.lp:0;
-  const y=Math.max(-120,Math.min(120,delta*2));
-  const z=(i/(maxCount-1)-.5)*300;
-  return {x,y,z,delta,p};
+  if(mode==='spatial'){
+   // Planimetria aperta: X chronology, Y local LP height, Z signed variation.
+   return {x:(i/(maxCount-1)-.5)*290,y:-105+Math.max(0,Math.min(100,p.lp))*2.1,z:Math.max(-105,Math.min(105,delta*2.5)),p};
+  }
+  // Existing mechanical view: horizontal competitive rank, elevation delta, depth time.
+  return {x:((score(p)-min)/extent-.5)*210,y:Math.max(-120,Math.min(120,delta*2)),z:(i/(maxCount-1)-.5)*300,p};
  });
  const rotate=({x,y,z})=>{
   const xx=x*Math.cos(yaw)-z*Math.sin(yaw);
   const zz=x*Math.sin(yaw)+z*Math.cos(yaw);
-  return {x:320+xx*.92,y:207-(y*Math.cos(pitch)-zz*Math.sin(pitch))*.94,depth:y*Math.sin(pitch)+zz*Math.cos(pitch)};
+  return {x:320+xx*.92,y:205-(y*Math.cos(pitch)-zz*Math.sin(pitch))*.92,depth:y*Math.sin(pitch)+zz*Math.cos(pitch)};
  };
- // Reference floor, not measured data: gridded X/Z plane with a fixed height.
- const floorY=-100;
- const planeCorners=[{x:-155,y:floorY,z:-175},{x:155,y:floorY,z:-175},{x:155,y:floorY,z:175},{x:-155,y:floorY,z:175}].map(rotate);
- el('polygon',{points:planeCorners.map(p=>p.x.toFixed(1)+','+p.y.toFixed(1)).join(' '),fill:'#28465a', 'fill-opacity':'.22',stroke:'#7993aa','stroke-opacity':'.35','stroke-width':1});
- for(let x=-150;x<=150;x+=30){
-  const a=rotate({x,y:floorY,z:-175}),b=rotate({x,y:floorY,z:175});
-  el('line',{x1:a.x,y1:a.y,x2:b.x,y2:b.y,stroke:'#93b0c0','stroke-opacity':x===0?'.38':'.17','stroke-width':x===0?1.3:1});
- }
- for(let z=-150;z<=150;z+=30){
-  const a=rotate({x:-155,y:floorY,z}),b=rotate({x:155,y:floorY,z});
-  el('line',{x1:a.x,y1:a.y,x2:b.x,y2:b.y,stroke:'#93b0c0','stroke-opacity':z===0?'.38':'.17','stroke-width':z===0?1.3:1});
- }
- const base={x:0,y:0,z:0};
- const axis=(to,name,color)=>{
-  const a=rotate(base),b=rotate(to);
-  el('line',{x1:a.x,y1:a.y,x2:b.x,y2:b.y,stroke:color,'stroke-width':1.5,'stroke-opacity':'.7'});
-  const t=el('text',{x:b.x+5,y:b.y-6,fill:color,'font-size':12});t.textContent=name;
+ const line=(a,b,color,opacity=.3,width=1,dash)=>{
+  const p=rotate(a),q=rotate(b);
+  const attrs={x1:p.x,y1:p.y,x2:q.x,y2:q.y,stroke:color,'stroke-opacity':opacity,'stroke-width':width};
+  if(dash)attrs['stroke-dasharray']=dash;
+  return el('line',attrs);
  };
- axis({x:130,y:0,z:0},'LP / RANK','#9bd4ca');
- axis({x:0,y:150,z:0},'ALTEZZA · Δ LP','#d1adbd');
- axis({x:0,y:0,z:185},'TEMPO','#a7bce6');
+ const axis=(a,b,name,color)=>{
+  line(a,b,color,.75,1.6);
+  const p=rotate(b),t=el('text',{x:p.x+5,y:p.y-7,fill:color,'font-size':12});t.textContent=name;
+ };
+ const floorY=mode==='spatial'?-105:-100;
+ // The 3D reference is transparent: no opaque plane, no platform, no false data.
+ for(let k=-150;k<=150;k+=30){
+  line({x:k,y:floorY,z:-150},{x:k,y:floorY,z:150},'#93b0c0',k===0?.32:.14,1,'2 5');
+  line({x:-150,y:floorY,z:k},{x:150,y:floorY,z:k},'#93b0c0',k===0?.32:.14,1,'2 5');
+ }
+ if(mode==='spatial'){
+  // Height is the actual local LP position. A dotted scale anchors the eye in open space.
+  for(const lp of [0,25,50,75,100]){
+   const y=-105+lp*2.1;
+   line({x:-150,y,z:-150},{x:150,y,z:-150},'#89a7bf',lp===0?.4:.17,1,'2 6');
+   const p=rotate({x:-150,y,z:-150});
+   const t=el('text',{x:p.x-4,y:p.y-3,fill:'#9fb4c4','font-size':10,'text-anchor':'end'});t.textContent=lp+' LP';
+  }
+  axis({x:-150,y:floorY,z:-150},{x:160,y:floorY,z:-150},'X · TEMPO','#9bd4ca');
+  axis({x:-150,y:floorY,z:-150},{x:-150,y:122,z:-150},'Y · LP','#d1adbd');
+  axis({x:-150,y:floorY,z:-150},{x:-150,y:floorY,z:165},'Z · Δ LP','#a7bce6');
+ }else{
+  axis({x:0,y:0,z:0},{x:130,y:0,z:0},'LP / RANK','#9bd4ca');
+  axis({x:0,y:0,z:0},{x:0,y:150,z:0},'ALTEZZA · Δ LP','#d1adbd');
+  axis({x:0,y:0,z:0},{x:0,y:0,z:185},'TEMPO','#a7bce6');
+ }
  if(!shown.length){note.textContent='Nessuna osservazione disponibile: la traiettoria non viene simulata.';return;}
- const projected=coords.slice(0,shown.length).map(rotate);
- // Projection stalks reveal elevation while the path remains a true 3D data projection.
- coords.slice(0,shown.length).forEach(c=>{
+ const visible=coords.slice(0,shown.length),projected=visible.map(rotate);
+ visible.forEach(c=>{
   const p=rotate(c),ground=rotate({x:c.x,y:floorY,z:c.z});
-  el('line',{x1:p.x,y1:p.y,x2:ground.x,y2:ground.y,stroke:'#bed8d7','stroke-width':1,'stroke-opacity':'.34','stroke-dasharray':'3 5'});
-  el('circle',{cx:ground.x,cy:ground.y,r:2.5,fill:'#93b0c0','fill-opacity':'.75'});
+  el('line',{x1:p.x,y1:p.y,x2:ground.x,y2:ground.y,stroke:'#bed8d7','stroke-width':1,'stroke-opacity':'.28','stroke-dasharray':'3 5'});
+  el('circle',{cx:ground.x,cy:ground.y,r:2,fill:'#93b0c0','fill-opacity':'.5'});
  });
- if(projected.length>1){
-  el('path',{d:projected.map((p,i)=>(i?'L':'M')+p.x.toFixed(1)+' '+p.y.toFixed(1)).join(' '),
-  fill:'none',stroke:'#a6ead5','stroke-width':3,'stroke-linecap':'round','stroke-linejoin':'round'});
- }
- projected.forEach((v,i)=>{
-  const circle=el('circle',{cx:v.x,cy:v.y,r:i===projected.length-1?6:4,fill:i===projected.length-1?'#c9f3df':'#86c8bc',stroke:'#173143','stroke-width':2});
-  const title=el('title',{},circle);title.textContent='Osservazione '+(i+1)+' · '+shown[i].lp+' LP · '+(shown[i].tier||'Lega non verificata');
+ if(projected.length>1)el('path',{d:projected.map((p,i)=>(i?'L':'M')+p.x.toFixed(1)+' '+p.y.toFixed(1)).join(' '),fill:'none',stroke:'#a6ead5','stroke-width':3,'stroke-linecap':'round','stroke-linejoin':'round'});
+ projected.forEach((p,i)=>{
+  const c=el('circle',{cx:p.x,cy:p.y,r:i===projected.length-1?6:4,fill:i===projected.length-1?'#e4e2b7':'#86c8bc',stroke:'#173143','stroke-width':2});
+  const title=el('title',{},c);title.textContent='Osservazione '+(i+1)+' · '+shown[i].lp+' LP · '+(shown[i].tier||'Lega non verificata');
  });
- const last=shown[shown.length-1];
- note.textContent='Osservazioni '+shown.length+'/'+dimensionalPoints.length+' · quota verticale: Δ LP · ultima: '+last.lp+' LP ('+(last.tier?last.tier+' '+(last.division||''):'lega non verificata')+') · '+(shown.length<2?'un punto non definisce una traiettoria':'traiettoria da osservazioni cronologiche; le rilevazioni mancanti non sono ricostruite')+'.';
+ const last=shown[shown.length-1],label=last.tier?last.tier+' '+(last.division||''):'lega non verificata';
+ note.textContent=(mode==='spatial'?'Vista spaziale · Y = LP nella divisione · ':'Vista strutturale · Y = Δ LP · ')+
+ 'osservazioni '+shown.length+'/'+dimensionalPoints.length+' · ultimo: '+last.lp+' LP ('+label+') · '+
+ (shown.length<2?'un punto non definisce una traiettoria.':'nessun dato intermedio inventato.');
 }
 function setDimensionalPoints(pts){
  dimensionalPoints=pts.filter(p=>Number.isFinite(p.lp)).map(p=>({lp:p.lp,tier:p.tier||null,division:p.division||null,at:p.at}));
  const step=document.getElementById('dimensional-step');
  step.max=String(Math.max(1,dimensionalPoints.length));step.value=step.max;
  drawDimensionalTrace();
+}
+for(const [id,mode] of [['dimensional-spatial','spatial'],['dimensional-structural','structural']]){
+ document.getElementById(id).addEventListener('click',()=>{
+  dimensionalMode=mode;
+  document.getElementById('dimensional-spatial').setAttribute('aria-pressed',String(mode==='spatial'));
+  document.getElementById('dimensional-structural').setAttribute('aria-pressed',String(mode==='structural'));
+  drawDimensionalTrace();
+ });
 }
 for(const id of ['dimensional-yaw','dimensional-pitch','dimensional-step'])document.getElementById(id).addEventListener('input',drawDimensionalTrace);
 // Direct manipulation of the scene: no constant animation, and no changes to LP data.
