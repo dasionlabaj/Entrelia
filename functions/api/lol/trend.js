@@ -1,0 +1,15 @@
+// Atlas LoL archive: match-by-match performance trend, not historical LP.
+const json=(v,s=200)=>new Response(JSON.stringify(v),{status:s,headers:{"content-type":"application/json; charset=utf-8","cache-control":"public, max-age=60","x-content-type-options":"nosniff"}});
+export async function onRequestGet({env}){
+ if(!env.ATLAS_DB)return json({status:"unconfigured"},503);
+ try{
+  const rows=await env.ATLAS_DB.prepare("SELECT match_id,game_start_ms,win,champion,queue_id FROM matches WHERE queue_id=420 ORDER BY game_start_ms ASC,match_id ASC LIMIT 500").all();
+  let cumulative=0,wins=0,losses=0;
+  const points=rows.results.map((r,i)=>{
+   cumulative+=r.win?1:-1;
+   if(r.win)wins++;else losses++;
+   return {index:i+1,at:r.game_start_ms,matchId:r.match_id,win:!!r.win,champion:r.champion,netWins:cumulative};
+  });
+  return json({status:"ok",account:"daxs#EUW",metric:"net_wins",description:"Vittorie cumulative meno sconfitte; non rappresenta LP o rank",wins,losses,total:points.length,points});
+ }catch(e){console.error("trend error",e);return json({status:"unavailable"},502);}
+}
