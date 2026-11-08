@@ -12,7 +12,7 @@ export async function onRequestGet({env}){
   if(!env.RIOT_API_KEY)return json({status:"needs_configuration",message:"Connessione Riot non configurata: manca il segreto RIOT_API_KEY su Cloudflare."},503);
   try{
     const account=await riot("/riot/account/v1/accounts/by-riot-id/daxs/EUW",env.RIOT_API_KEY);
-    const ids=await riot("/lol/match/v5/matches/by-puuid/"+encodeURIComponent(account.puuid)+"/ids?start=0&count=10",env.RIOT_API_KEY);
+    const ids=await riot("/lol/match/v5/matches/by-puuid/"+encodeURIComponent(account.puuid)+"/ids?start=0&count=20",env.RIOT_API_KEY);
     const matches=await Promise.all(ids.map(async id=>{
       const game=await riot("/lol/match/v5/matches/"+encodeURIComponent(id),env.RIOT_API_KEY);
       const p=game.info?.participants?.find(p=>p.puuid===account.puuid);
