@@ -32,7 +32,27 @@ export async function onRequestGet({env}){
       }));
       return {participants,teamId:p.teamId,puuid:account.puuid,id,champion:p.championName,kills:p.kills,deaths:p.deaths,assists:p.assists,damageDealt:p.totalDamageDealtToChampions,damageTaken:p.totalDamageTaken,physicalDamageTaken:p.physicalDamageTaken,magicDamageTaken:p.magicDamageTaken,trueDamageTaken:p.trueDamageTaken,totalDamageDealt:p.totalDamageDealt,totalPhysicalDamageDealt:p.physicalDamageDealt,totalMagicDamageDealt:p.magicDamageDealt,totalTrueDamageDealt:p.trueDamageDealt,damageSelfMitigated:p.damageSelfMitigated,totalHealsOnTeammates:p.totalHealsOnTeammates,physicalDamage:p.physicalDamageDealtToChampions,magicDamage:p.magicDamageDealtToChampions,trueDamage:p.trueDamageDealtToChampions,gold:p.goldEarned,cs:(p.totalMinionsKilled||0)+(p.neutralMinionsKilled||0),vision:p.visionScore,wardsPlaced:p.wardsPlaced,wardsKilled:p.wardsKilled,healing:p.totalHeal,shielding:p.totalDamageShieldedOnTeammates,ccSeconds:p.timeCCingOthers,turretDamage:p.damageDealtToTurrets,objectiveDamage:p.damageDealtToObjectives,level:p.champLevel,position:p.teamPosition,items:[p.item0,p.item1,p.item2,p.item3,p.item4,p.item5,p.item6],win:p.win,mode:game.info.gameMode,durationSeconds:game.info.gameDuration,startedAt:game.info.gameStartTimestamp,queueId:game.info.queueId};
     }));
-    return json({status:"ok",account:"daxs#EUW",matches:matches.filter(Boolean)});
+    const validMatches=matches.filter(Boolean);
+    // An archive write is idempotent: re-fetching the same Riot match never duplicates it.
+    // Keep the original latest-match API usable if D1 is temporarily unavailable.
+    let archive={status:"unconfigured"};
+    if(env.ATLAS_DB){
+      try{
+        if(validMatches.length){
+          const statements=validMatches.map(m=>env.ATLAS_DB.prepare(
+            "INSERT OR IGNORE INTO matches (match_id,puuid,game_start_ms,game_end_ms,queue_id,game_mode,champion,win,kills,deaths,assists,payload_json) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)"
+          ).bind(m.id,account.puuid,m.startedAt,
+            m.startedAt+Math.round((m.durationSeconds||0)*1000),
+            m.queueId,m.mode,m.champion,m.win?1:0,m.kills,m.deaths,m.assists,JSON.stringify(m)));
+          await env.ATLAS_DB.batch(statements);
+        }
+        archive={status:"ok",observed:validMatches.length};
+      }catch(e){
+        console.error("Atlas D1 archive insert failed",e);
+        archive={status:"unavailable"};
+      }
+    }
+    return json({status:"ok",account:"daxs#EUW",matches:validMatches,archive});
   }catch(error){
     const s=error.status;
     if(s===401||s===403)return json({status:"riot_key_invalid",message:"La chiave Riot non è valida o è scaduta."},503);
