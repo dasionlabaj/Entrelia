@@ -216,7 +216,7 @@ async function loadMatches(){
   if(!response.ok||data.status!=='ok')throw Error(data.message||'API Riot: HTTP '+response.status);
   if(!Array.isArray(data.matches))throw Error('Formato API inatteso: manca la lista matches.');
   if(!data.matches.length){status.textContent='Nessuna partita recente trovata.';return;}
-  status.textContent='Partite recuperate da Riot.';
+  status.textContent=data.stale?'Riot temporaneamente limitata: visualizzo le ultime partite salvate nell’archivio Atlas.':'Partite recuperate da Riot.';
   const played=data.matches.length,wins=data.matches.filter(m=>m.win).length;
   const title=document.createElement('strong');title.textContent='Riepilogo ultime '+played+' partite';
   const line=document.createElement('span');line.textContent='Vittorie: '+wins+' · Sconfitte: '+(played-wins)+' · Win rate: '+Math.round(wins/played*100)+'%';
