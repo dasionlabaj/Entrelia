@@ -363,8 +363,10 @@ async function loadTrend(){
   const data=await response.json();
   if(data.status!=='ok')throw Error('Dati non disponibili');
   if(requestId!==latestTrendRequest)return;
-  record.textContent=data.wins+' V / '+data.losses+' S';
-  const pts=data.points||[];
+  const pts=Array.isArray(data.points)?data.points:[];
+  const wins=pts.filter(p=>p.win).length, losses=pts.length-wins;
+  const available=Number.isFinite(data.available)?data.available:pts.length;
+  record.textContent=wins+' V / '+losses+' S · '+pts.length+'/'+limit;
   svg.replaceChildren();
   if(!pts.length){note.textContent='Nessuna partita classificata archiviata.';return;}
   const NS='http://www.w3.org/2000/svg';
@@ -382,7 +384,7 @@ async function loadTrend(){
   add('path',{d,fill:'none',stroke:'#91eed6','stroke-width':3,'stroke-linejoin':'round','stroke-linecap':'round'});
   for(let i=0;i<pts.length;i++){const p=pts[i];const c=add('circle',{cx:x(i),cy:y(p.netWins),r:4.5,fill:p.win?'#91eed6':'#f5a3b2',stroke:'#172b3e','stroke-width':1.5});const tip=document.createElementNS(NS,'title');tip.textContent='Partita '+(i+1)+' · '+(p.win?'Vittoria':'Sconfitta')+' · Saldo '+p.netWins;c.append(tip);}
   add('text',{x:left,y:h-4},'MATCH 1');add('text',{x:w-right,y:h-4,'text-anchor':'end'},'MATCH '+pts.length);
-  note.textContent='Ultime '+pts.length+' partite Solo/Duo archiviate (se disponibili) · saldo vittorie − sconfitte nella selezione · non LP né rank storico.';
+  note.textContent='Visualizzate '+pts.length+' partite Solo/Duo sulle '+limit+' richieste · '+available+' classificate presenti in Atlas. '+(available<limit?'Storico incompleto: servono altre partite archiviate. ':'')+'Saldo vittorie − sconfitte della selezione · non LP.';
  }catch(e){if(requestId===latestTrendRequest){record.textContent='Non disponibile';note.textContent='Archivio temporaneamente non disponibile.';}}
 }
 
