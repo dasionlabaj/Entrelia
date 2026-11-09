@@ -29,7 +29,12 @@ footer{border-top:1px solid #9ab3ce23;padding-top:1.5rem;font-family:ui-monospac
 .archive-signal small{font:500 .69rem/1.4 ui-monospace,Consolas,monospace;display:block;color:#adcbce;letter-spacing:.06em}
 .archive-signal strong{font:600 clamp(1rem,3vw,1.5rem)/1.5 ui-monospace,Consolas,monospace;color:#a8f2e2;display:block}
 @media(max-width:580px){main{padding:0 1rem 3rem}.observatory-top{font-size:.58rem}.hero-orbit{width:168px;height:168px;margin:2.4rem auto 1.2rem;transform:scale(.8)}.hero-eyebrow{font-size:.6rem;letter-spacing:.12em}h1{letter-spacing:.06em}.archive-signal{gap:.25rem;padding:.5rem}.archive-signal div{padding:.25rem}}
-@media(prefers-reduced-motion:no-preference){.orbit-a{animation:obs-turn 34s linear infinite}.orbit-b{animation:obs-turn-back 42s linear infinite}@keyframes obs-turn{to{transform:rotate(335deg)}}@keyframes obs-turn-back{to{transform:rotate(-302deg)}}}
+/* Static orbit sculpture: directional light suggests motion, with no animation. */
+.hero-orbit{filter:drop-shadow(0 0 28px #6fe9da38)}
+.orbit-a{border-color:#93f2dacc;box-shadow:inset 5px 0 15px #62f5d23b,3px -2px 9px #9deeff25}
+.orbit-b{border-color:#c1aafa9c;box-shadow:inset -6px 0 16px #9279ed38,-2px 3px 11px #b3a0f333}
+.orbit-c{border-color:#d0d9ff59;box-shadow:inset 0 0 12px #d0d9ff22}
+.atlas-sigil{filter:drop-shadow(0 0 17px #68eada80)}
 .trend-panel{margin:1.4rem 0;padding:1.3rem;border:1px solid #537d88;border-radius:12px;background:linear-gradient(135deg,#0b2534,#191e40);text-align:left}.trend-heading{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}.trend-heading h3{font-size:1.4rem;margin:.25rem 0 0}.trend-kicker{font:600 .7rem ui-monospace,Consolas,monospace;color:#9de8d6;letter-spacing:.14em}.trend-heading #trend-record{font:600 .9rem ui-monospace,Consolas,monospace;color:#d4e7ff}#trend-chart{display:block;width:100%;height:auto;min-height:130px;margin-top:.8rem;overflow:visible}#trend-note{font-size:.82rem;color:#acbdd2;line-height:1.5;margin:.3rem 0 0}.trend-panel text{font:12px ui-monospace,Consolas,monospace;fill:#b8cadc}
 /* Entrelia / Atlas 0.3 — spacetime geometry, typography, team identity */
 :root{--deep-field:#060c19;--time-grid:#8d9ecb;--blue-team:#5baaff;--red-team:#ff738c}
