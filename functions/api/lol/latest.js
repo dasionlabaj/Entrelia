@@ -22,10 +22,25 @@ export async function onRequestGet({env,request}){
   try{
     const account=await riot("/riot/account/v1/accounts/by-riot-id/daxs/EUW",env.RIOT_API_KEY);
     const ids=await riot("/lol/match/v5/matches/by-puuid/"+encodeURIComponent(account.puuid)+"/ids?start=0&count=20",env.RIOT_API_KEY);
-    // Resolve matches in small batches to avoid a twenty-request Riot burst.
-    const matches=[];
-    for(let i=0;i<ids.length;i+=2){
-      const batch=await Promise.all(ids.slice(i,i+2).map(async id=>{
+    // Riot lists match IDs in one request. Reuse immutable match payloads already saved in Atlas.
+    const cached=new Map();
+    if(env.ATLAS_DB&&ids.length){
+      try{
+        const placeholders=ids.map(()=>"?").join(",");
+        const rows=await env.ATLAS_DB.prepare("SELECT match_id,payload_json FROM matches WHERE match_id IN ("+placeholders+")").bind(...ids).all();
+        for(const row of rows.results||[]){
+          try{
+            const match=JSON.parse(row.payload_json);
+            if(match&&match.id===row.match_id)cached.set(row.match_id,match);
+          }catch(_){/* Corrupt archive entries are re-fetched. */}
+        }
+      }catch(e){console.error("Atlas match index lookup failed",e);}
+    }
+    const missingIds=ids.filter(id=>!cached.has(id));
+    const downloaded=new Map();
+    // Only missing matches cost Riot detail requests; batches avoid bursts.
+    for(let i=0;i<missingIds.length;i+=2){
+      const batch=await Promise.all(missingIds.slice(i,i+2).map(async id=>{
       const game=await riot("/lol/match/v5/matches/"+encodeURIComponent(id),env.RIOT_API_KEY);
       const p=game.info?.participants?.find(p=>p.puuid===account.puuid);
       if(!p)return null;
@@ -44,31 +59,32 @@ export async function onRequestGet({env,request}){
       }));
       return {participants,teamId:p.teamId,puuid:account.puuid,id,champion:p.championName,kills:p.kills,deaths:p.deaths,assists:p.assists,damageDealt:p.totalDamageDealtToChampions,damageTaken:p.totalDamageTaken,physicalDamageTaken:p.physicalDamageTaken,magicDamageTaken:p.magicDamageTaken,trueDamageTaken:p.trueDamageTaken,totalDamageDealt:p.totalDamageDealt,totalPhysicalDamageDealt:p.physicalDamageDealt,totalMagicDamageDealt:p.magicDamageDealt,totalTrueDamageDealt:p.trueDamageDealt,damageSelfMitigated:p.damageSelfMitigated,totalHealsOnTeammates:p.totalHealsOnTeammates,physicalDamage:p.physicalDamageDealtToChampions,magicDamage:p.magicDamageDealtToChampions,trueDamage:p.trueDamageDealtToChampions,gold:p.goldEarned,cs:(p.totalMinionsKilled||0)+(p.neutralMinionsKilled||0),vision:p.visionScore,wardsPlaced:p.wardsPlaced,wardsKilled:p.wardsKilled,healing:p.totalHeal,shielding:p.totalDamageShieldedOnTeammates,ccSeconds:p.timeCCingOthers,turretDamage:p.damageDealtToTurrets,objectiveDamage:p.damageDealtToObjectives,level:p.champLevel,position:p.teamPosition,items:[p.item0,p.item1,p.item2,p.item3,p.item4,p.item5,p.item6],win:p.win,mode:game.info.gameMode,durationSeconds:game.info.gameDuration,startedAt:game.info.gameStartTimestamp,queueId:game.info.queueId};
       }));
-      matches.push(...batch);
+      batch.filter(Boolean).forEach(m=>downloaded.set(m.id,m));
     }
-    const validMatches=matches.filter(Boolean);
+    const validMatches=ids.map(id=>downloaded.get(id)||cached.get(id)).filter(Boolean);
+    const newlyFetched=[...downloaded.values()];
     // An archive write is idempotent: re-fetching the same Riot match never duplicates it.
     // Keep the original latest-match API usable if D1 is temporarily unavailable.
     let archive={status:"unconfigured"};
     if(env.ATLAS_DB){
       try{
-        if(validMatches.length){
-          const statements=validMatches.map(m=>env.ATLAS_DB.prepare(
+        if(newlyFetched.length){
+          const statements=newlyFetched.map(m=>env.ATLAS_DB.prepare(
             "INSERT OR IGNORE INTO matches (match_id,puuid,game_start_ms,game_end_ms,queue_id,game_mode,champion,win,kills,deaths,assists,payload_json) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)"
           ).bind(m.id,account.puuid,m.startedAt,
             m.startedAt+Math.round((m.durationSeconds||0)*1000),
             m.queueId,m.mode,m.champion,m.win?1:0,m.kills,m.deaths,m.assists,JSON.stringify(m)));
           await env.ATLAS_DB.batch(statements);
         }
-        archive={status:"ok",observed:validMatches.length};
-        if(validMatches.length)await recordEvent(env,"match-"+validMatches[0].id,"match_observed","riot_sync","Latest match observed and archive write completed");
+        archive={status:"ok",observed:validMatches.length,reused:cached.size,downloaded:newlyFetched.length};
+        if(newlyFetched.length)await recordEvent(env,"match-"+newlyFetched[0].id,"match_observed","riot_sync","New match observed and archive write completed");
       }catch(e){
         console.error("Atlas D1 archive insert failed",e);
         archive={status:"unavailable"};
         await recordError(env,"archive","insert_failed");
       }
     }
-    return json({status:"ok",account:"daxs#EUW",matches:validMatches,archive});
+    return json({status:"ok",account:"daxs#EUW",matches:validMatches,archive,source:"riot_and_atlas"});
   }catch(error){
     const s=error.status;
     await recordError(env,"riot_latest",s===429?"rate_limited":s===401||s===403?"auth_error":s===404?"not_found":"upstream_error");
