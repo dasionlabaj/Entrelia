@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#080e21"><title>Spectrum · RANK 0.1 — Entrelia</title>
+<meta name="description" content="Registro architetturale del modello RANK dinamico di Entrelia Spectrum.">
+<style>
+:root{color-scheme:dark;font-family:system-ui,-apple-system,Segoe UI,sans-serif;background:#080e21;color:#eff4ff}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 20% 8%,#24365d,transparent 45%),radial-gradient(ellipse at 90% 82%,#34264e,transparent 46%),#080e21;min-height:100vh}
+main{max-width:950px;margin:auto;padding:2rem 1.2rem 5rem}a{color:#a8e9d7}.top{font:600 .8rem/1.6 ui-monospace,Consolas,monospace;letter-spacing:.12em}
+header{padding:3rem 0 1.2rem}small,.overline{font:600 .78rem/1.6 ui-monospace,Consolas,monospace;color:#a8e9d7;letter-spacing:.1em}
+h1{font-size:clamp(2.8rem,8vw,5.3rem);letter-spacing:.09em;margin:.4rem 0}h2{margin:0 0 1rem;font-size:1.35rem}p{color:#d2dcef;line-height:1.75}
+.box{background:#101b34e8;border:1px solid #506686;border-radius:14px;padding:1.4rem;margin:1.1rem 0}
+.state{font:600 .84rem/1.7 ui-monospace,Consolas,monospace;color:#b7caff}
+.flow{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:.6rem;margin:1.4rem 0}
+.node{border:1px solid #81cfc5;border-radius:11px;padding:1rem;flex:1 1 155px;text-align:center;background:#172e43;min-width:0}
+.node b{display:block}.node span{font-size:.8rem;color:#b5c7e5}.arrow{font-size:1.35rem;color:#9ce3d6}
+pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:.88rem;line-height:1.65;color:#c9e4fd;border:1px solid #3b537e;border-radius:9px;padding:1.2rem;background:#0a1328}
+label{display:block;margin:.9rem 0;color:#d2dcef}.track{height:12px;background:#29354f;border-radius:20px;overflow:hidden;margin:.65rem 0}
+.fill{height:100%;width:0;background:#9ce4d5}
+dl{display:grid;grid-template-columns:minmax(115px,1fr) 2fr;gap:.7rem}dt{color:#9ce4d5}dd{margin:0;color:#d2dcef}
+footer{padding-top:2rem;color:#aebed8;font-size:.85rem}code{color:#a8e9d7}
+@media(max-width:620px){.arrow{width:100%;text-align:center;transform:rotate(90deg)}dl{grid-template-columns:1fr}dd{margin-bottom:.8rem}}
+</style></head><body><main>
+<a class="top" href="/">← ENTRELIA / ATLAS</a>
+<header><div class="overline">SPECTRUM / SANDBOX / RANK / ARCHITECTURE NOTE 0.1</div><h1>RANK<span style="color:#9ce4d5">.</span></h1>
+<p>Una bilancia a molla per osservare una progressione che cambia nel tempo. Questo è il primo punto fissato: il modello è ancora in definizione, non un sistema di certificazione attivo.</p></header>
+<section class="box" aria-labelledby="principio"><h2 id="principio">Principio cardine</h2>
+<p>Il rank è una <strong>misura dinamica</strong>, non un'etichetta statica né una valutazione del valore umano. La misura può evolvere con gli input, con il tempo e con lo stato precedente della bilancia. Il curriculum sarà costruito dalla persona usando il rank come strumento: non è il curriculum a generare il rank.</p>
+<p class="state">Profilo di riferimento: DAX · Intervallo proposto: 0–100 · Valore attuale: non calcolato</p>
+<div class="track" role="img" aria-label="Scala da 0 a 100; nessun punteggio calcolato"><div class="fill"></div></div>
+<div class="state">0 ───────────────────────────── 100 &nbsp; / &nbsp; nessuna misura disponibile</div></section>
+<section class="box" aria-labelledby="triangolazione"><h2 id="triangolazione">Triangolazione concettuale</h2>
+<div class="flow"><div class="node"><b>P₁</b><span>Bolla / perceptrone laterale</span></div><div class="arrow">↘</div><div class="node"><b>P₀</b><span>Bilancia / perceptrone centrale</span></div><div class="arrow">↗</div><div class="node"><b>P₂</b><span>Bolla / perceptrone laterale</span></div></div>
+<pre>input bolla A → P₁ ── peso dinamico w₁(t) ──┐
+                                               ├→ P₀ → RANK(t) [0, 100]
+input bolla B → P₂ ── peso dinamico w₂(t) ──┘
+
+LoL Analyst → adapter → una possibile bolla d'ingresso
+Altre discipline → adapter → altre bolle future</pre>
+<p>I perceptroni laterali contribuiscono ai pesi dinamici del nodo centrale. La retroazione fra i nodi, il comportamento della molla e la legge di aggiornamento dei pesi <strong>rimangono da progettare</strong>. Non vengono presentati come già implementati.</p></section>
+<section class="box"><h2>Stato del primo passo</h2><dl>
+<dt>Definito</dt><dd>Nome del ramo RANK; collocazione in Spectrum; analogia della bilancia a molla; tre nodi iniziali; output concettuale 0–100.</dd>
+<dt>Da determinare</dt><dd>Schema degli input, memoria nel tempo, funzione di trasferimento, retroazione, apprendimento, calibrazione e verifica delle competenze.</dd>
+<dt>Non implementato</dt><dd>Motore di inferenza, addestramento, rank reale di DAX, attestazioni e curriculum esportabile.</dd>
+<dt>Regola di lavoro</dt><dd>Immaginare molti passi, rendere concreto il primo e rivedere i successivi in base a ciò che emerge.</dd>
+</dl></section>
+<footer>Entrelia Spectrum · Registro architetturale iniziale · 9 novembre 2026 · <a href="/">Torna ai moduli</a></footer>
+</main></body></html>
