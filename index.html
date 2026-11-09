@@ -144,6 +144,11 @@ p.hero-copy{color:#c4d2e1;letter-spacing:.02em;font-weight:350}
 #lp-chart text{font:12px ui-monospace,Consolas,monospace;fill:#c0d2df}
 #lp-note{font-size:.8rem;color:#b2c7d4;margin:.2rem 0 0;line-height:1.5}
 @media(max-width:540px){.lp-panel{padding:.8rem}.lp-heading{gap:.55rem}.lp-current strong{font-size:1.4rem}.lp-heading h3{font-size:1.06rem}}
+.champion-avatar{width:34px;height:34px;flex:0 0 34px;object-fit:cover;border:1px solid #8ba7c5;border-radius:7px;vertical-align:middle;background:#12263b}
+.champion-inline{display:inline-flex;align-items:center;gap:.55rem;min-width:0}
+.champion-inline .champion-avatar{width:30px;height:30px;flex-basis:30px}
+.champion-inline .champion-text{min-width:0;overflow-wrap:anywhere}
+.player-line.champion-inline{display:flex;align-items:center}
 </style></head><body><main>
 <div class="observatory-top"><a class="corner-brand" href="/" aria-label="Entrelia, home"><span class="mini-mark" aria-hidden="true">✧</span> E / ATLAS</a><span class="signal"><i></i> OBSERVATORY · 001</span></div>
 <div class="hero-orbit" aria-hidden="true"><div class="orbit orbit-a"></div><div class="orbit orbit-b"></div><div class="orbit orbit-c"></div><div class="electron electron-a"></div><div class="electron electron-b"></div><svg class="atlas-sigil" width="118" height="118" viewBox="0 0 118 118" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M59 8L108 59L59 110L10 59L59 8Z" stroke="currentColor" stroke-width="1.5"/><path d="M59 25L93 59L59 93L25 59L59 25Z" stroke="currentColor" stroke-opacity=".58"/><path d="M59 8V110M10 59H108" stroke="currentColor" stroke-opacity=".38"/><circle cx="59" cy="59" r="8" fill="currentColor"/><circle cx="59" cy="59" r="20" stroke="currentColor" stroke-opacity=".7"/></svg></div>
@@ -203,6 +208,28 @@ function detailedDamage(m){
  [['Totale ai campioni',m.damageDealt],['Totale inflitto',m.totalDamageDealt],['Totale subito',m.damageTaken],['Danni mitigati',m.damageSelfMitigated],['Cure totali',m.healing],['Cure agli alleati',m.totalHealsOnTeammates],['Scudi agli alleati',m.shielding],['Danni alle torri',m.turretDamage],['Danni agli obiettivi',m.objectiveDamage]].forEach(([name,value])=>totals.append(stat(name,fmt(value))));
  section.append(totals);return section;
 }
+// Data Dragon static champion portraits: no Riot API key or player-data requests.
+const DATA_DRAGON_VERSION='16.22.1';
+const CHAMPION_ASSET_KEYS={Wukong:'MonkeyKing',Fiddlesticks:'FiddleSticks',NunuWillump:'Nunu',RenataGlasc:'Renata',KogMaw:'KogMaw',ChoGath:'Chogath',VelKoz:'Velkoz',BelVeth:'Belveth',KaiSa:'Kaisa',KhaZix:'Khazix',LeBlanc:'Leblanc'};
+function championPortrait(name){
+ if(typeof name!=='string'||!name.trim())return null;
+ const key=name.replace(/[^A-Za-z0-9]/g,'');
+ const asset=CHAMPION_ASSET_KEYS[key]||key;
+ if(!asset)return null;
+ const img=document.createElement('img');
+ img.className='champion-avatar';
+ img.src='https://ddragon.leagueoflegends.com/cdn/'+DATA_DRAGON_VERSION+'/img/champion/'+encodeURIComponent(asset)+'.png';
+ img.alt='';
+ img.loading='lazy';
+ img.decoding='async';
+ img.referrerPolicy='no-referrer';
+ img.addEventListener('error',()=>img.remove(),{once:true});
+ return img;
+}
+function addChampionPortrait(container,name){
+ const portrait=championPortrait(name);
+ if(portrait)container.prepend(portrait);
+}
 let latestMatchesRequest=0;
 async function loadMatches(source='archive'){
  const requestId=++latestMatchesRequest;
@@ -233,7 +260,9 @@ async function loadMatches(source='archive'){
    const foldKda=document.createElement('span');foldKda.textContent='KDA '+match.kills+'/'+match.deaths+'/'+match.assists;
    const foldDate=document.createElement('span');foldDate.textContent=match.startedAt?new Date(match.startedAt).toLocaleDateString('it-IT'):'—';
    const foldArrow=document.createElement('span');foldArrow.className='fold-arrow';foldArrow.textContent='⌄';
-   foldLabel.append(foldResult,foldKda,foldDate,foldArrow);
+   const foldIdentity=document.createElement('span');foldIdentity.className='champion-inline';
+   foldIdentity.append(foldResult);addChampionPortrait(foldIdentity,match.champion);
+   foldLabel.append(foldIdentity,foldKda,foldDate,foldArrow);
    fold.append(foldLabel);
    const article=document.createElement('article');article.className='match';
    const heading=document.createElement('strong');heading.textContent=(match.win?'Vittoria · ':'Sconfitta · ')+(match.champion||'Campione sconosciuto');heading.className=match.win?'result-win':'result-loss';
@@ -243,7 +272,9 @@ async function loadMatches(source='archive'){
    const dealt=Number.isFinite(match.damageDealt)?match.damageDealt.toLocaleString('it-IT'):'—';
    const taken=Number.isFinite(match.damageTaken)?match.damageTaken.toLocaleString('it-IT'):'—';
    damage.textContent='Danni ai campioni: '+dealt+' · Danni subiti: '+taken;
-   article.append(heading,kda,damage,detail);
+   const headingWithPortrait=document.createElement('span');headingWithPortrait.className='champion-inline';
+   headingWithPortrait.append(heading);addChampionPortrait(headingWithPortrait,match.champion);
+   article.append(headingWithPortrait,kda,damage,detail);
    const comparison=match.participants?.length===10?matchComparison(match):null;if(comparison)article.append(comparison);
    const expand=document.createElement('details'),label=document.createElement('summary');label.textContent='Statistiche complete della partita';
    const grid=document.createElement('div');grid.className='stats-grid';
@@ -296,7 +327,8 @@ function matchComparison(match){
     row.setAttribute('aria-pressed',String(selected===p.puuid));
     const top=document.createElement('span');top.className='player-line';
     const name=document.createElement('b');name.className='player-identity';
-    name.textContent=p.champion+' · '+p.name+(p.tag?'#'+p.tag:'');top.append(name);
+    name.textContent=p.champion+' · '+p.name+(p.tag?'#'+p.tag:'');
+    top.classList.add('champion-inline');top.append(name);addChampionPortrait(top,p.champion);
     const subtitle=document.createElement('span');subtitle.className='player-meta';
     subtitle.textContent='KDA '+p.kills+'/'+p.deaths+'/'+p.assists+' · '+rankOf(p);
     const metricRow=document.createElement('span');metricRow.className='player-value';
