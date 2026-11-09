@@ -198,18 +198,28 @@ function detailedDamage(m){
  [['Totale ai campioni',m.damageDealt],['Totale inflitto',m.totalDamageDealt],['Totale subito',m.damageTaken],['Danni mitigati',m.damageSelfMitigated],['Cure totali',m.healing],['Cure agli alleati',m.totalHealsOnTeammates],['Scudi agli alleati',m.shielding],['Danni alle torri',m.turretDamage],['Danni agli obiettivi',m.objectiveDamage]].forEach(([name,value])=>totals.append(stat(name,fmt(value))));
  section.append(totals);return section;
 }
+let latestMatchesRequest=0;
 async function loadMatches(){
+ const requestId=++latestMatchesRequest;
  status.textContent='Caricamento partite reali da Riot…';matches.replaceChildren();summary.hidden=true;summary.replaceChildren();
  try{
-  const response=await fetch('/api/lol/latest',{headers:{Accept:'application/json'}});
+  const response=await fetch('/api/lol/latest',{headers:{Accept:'application/json'},cache:'no-store'});
+  const contentType=response.headers.get('content-type')||'';
+  if(!contentType.includes('json'))throw Error('Risposta API non JSON (HTTP '+response.status+'). Controllare il routing /api/lol/latest.');
   const data=await response.json();
-  if(!response.ok||data.status!=='ok'){status.textContent=data.message||'Servizio Riot temporaneamente non disponibile.';return;}
-  if(!data.matches?.length){status.textContent='Nessuna partita recente trovata.';return;}
+  if(requestId!==latestMatchesRequest)return;
+  if(!response.ok||data.status!=='ok')throw Error(data.message||'API Riot: HTTP '+response.status);
+  if(!Array.isArray(data.matches))throw Error('Formato API inatteso: manca la lista matches.');
+  if(!data.matches.length){status.textContent='Nessuna partita recente trovata.';return;}
   status.textContent='Partite recuperate da Riot.';
   const played=data.matches.length,wins=data.matches.filter(m=>m.win).length;
   const title=document.createElement('strong');title.textContent='Riepilogo ultime '+played+' partite';
   const line=document.createElement('span');line.textContent='Vittorie: '+wins+' · Sconfitte: '+(played-wins)+' · Win rate: '+Math.round(wins/played*100)+'%';
-  summary.append(title,line);summary.hidden=false;
+  summary.append(title,line);
+  const championCounts=new Map();
+  data.matches.forEach(m=>{if(typeof m.champion==='string'&&m.champion.trim()){const name=m.champion.trim();championCounts.set(name,(championCounts.get(name)||0)+1);}});
+  if(championCounts.size){const champions=document.createElement('span');champions.textContent='Campioni giocati: '+[...championCounts].sort((a,b)=>b[1]-a[1]).map(([name,count])=>name+' ×'+count).join(' · ');summary.append(champions);}
+  summary.hidden=false;
   for(const match of data.matches){
    const fold=document.createElement('details');fold.className='match-fold';
    const foldLabel=document.createElement('summary');foldLabel.className='match-fold-label';
@@ -242,7 +252,7 @@ async function loadMatches(){
       if(fold.open&&!fold.dataset.rankLoaded){fold.dataset.rankLoaded='true';comparison.querySelector('.rank-load')?.click();}
    });
   }
- }catch(e){status.textContent='Non riesco a contattare il servizio Riot in questo momento.';}
+ }catch(e){if(requestId===latestMatchesRequest){status.textContent='LoL Analyst: '+(e instanceof Error?e.message:'Errore imprevisto');summary.hidden=true;}}
 }
 const comparisonMetrics=[
  ["damageDealt","Danni ai campioni"],["damageTaken","Danni subiti"],
