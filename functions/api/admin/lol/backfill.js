@@ -8,15 +8,22 @@ async function authorized(header,secret){
  const b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(secret));
  return new Uint8Array(a).every((value,i)=>value===new Uint8Array(b)[i]);
 }
-async function riot(path,key){
- const response=await fetch("https://europe.api.riotgames.com"+path,{headers:{"X-Riot-Token":key,Accept:"application/json"}});
- if(!response.ok){
-  const error=new Error("riot_error");
-  error.status=response.status;
-  error.retryAfter=response.headers.get("Retry-After");
-  throw error;
- }
- return response.json();
+// Per-invocation pacing only: a shared coordinator is still required for global limits.
+function pacedRiot(key){
+ let nextAllowed=0;
+ return async function riot(path){
+  const delay=Math.max(0,nextAllowed-Date.now());
+  if(delay)await new Promise(resolve=>setTimeout(resolve,delay));
+  nextAllowed=Date.now()+1500;
+  const response=await fetch("https://europe.api.riotgames.com"+path,{headers:{"X-Riot-Token":key,Accept:"application/json"}});
+  if(!response.ok){
+   const error=new Error("riot_error");
+   error.status=response.status;
+   error.retryAfter=response.headers.get("Retry-After");
+   throw error;
+  }
+  return response.json();
+ };
 }
 function simplify(game,puuid,id){
  const p=game.info?.participants?.find(x=>x.puuid===puuid);
@@ -62,8 +69,9 @@ export async function onRequestPost({request,env}){
  if(!Number.isInteger(start)||start<0||start>1000||!Number.isInteger(count)||count<1||count>20)
   return respond({status:"invalid_range",message:"Use start >= 0 and count 1..20."},400);
  try{
-  const account=await riot("/riot/account/v1/accounts/by-riot-id/daxs/EUW",env.RIOT_API_KEY);
-  const ids=await riot("/lol/match/v5/matches/by-puuid/"+encodeURIComponent(account.puuid)+"/ids?start="+start+"&count="+count,env.RIOT_API_KEY);
+  const riot=pacedRiot(env.RIOT_API_KEY);
+  const account=await riot("/riot/account/v1/accounts/by-riot-id/daxs/EUW");
+  const ids=await riot("/lol/match/v5/matches/by-puuid/"+encodeURIComponent(account.puuid)+"/ids?start="+start+"&count="+count);
   const known=new Set();
   if(ids.length){
    const query="SELECT match_id FROM matches WHERE match_id IN ("+ids.map(()=>"?").join(",")+")";
@@ -71,24 +79,32 @@ export async function onRequestPost({request,env}){
    for(const row of rows.results||[])known.add(row.match_id);
   }
   const missing=ids.filter(id=>!known.has(id));
-  const matches=[];
-  // Two concurrent detail lookups at a time; backfill is repeatable after rate limits.
-  for(let i=0;i<missing.length;i+=2){
-   const games=await Promise.all(missing.slice(i,i+2).map(async id=>({id,game:await riot("/lol/match/v5/matches/"+encodeURIComponent(id),env.RIOT_API_KEY)})));
-   for(const {id,game} of games){
-    const m=simplify(game,account.puuid,id);
-    if(m)matches.push(m);
+  let downloaded=0;
+  // Sequential requests prevent bursts within this invocation.
+  // Save each match immediately so a later 429 does not discard earlier progress.
+  for(const id of missing){
+   let game;
+   try{
+    game=await riot("/lol/match/v5/matches/"+encodeURIComponent(id));
+   }catch(e){
+    if(e.status===429){
+     return respond({status:"rate_limited",account:"daxs#EUW",
+      message:"Riot rate limit: resume the same batch after retryAfter.",
+      requested:count,listed:ids.length,reused:known.size,downloaded,
+      retryAfter:e.retryAfter||null,nextStart:start},429);
+    }
+    throw e;
    }
-  }
-  if(matches.length){
-   const statements=matches.map(m=>env.ATLAS_DB.prepare(
+   const m=simplify(game,account.puuid,id);
+   if(!m)continue;
+   await env.ATLAS_DB.prepare(
     "INSERT OR IGNORE INTO matches (match_id,puuid,game_start_ms,game_end_ms,queue_id,game_mode,champion,win,kills,deaths,assists,payload_json) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)"
    ).bind(m.id,account.puuid,m.startedAt,m.startedAt+Math.round((m.durationSeconds||0)*1000),
-    m.queueId,m.mode,m.champion,m.win?1:0,m.kills,m.deaths,m.assists,JSON.stringify(m)));
-   await env.ATLAS_DB.batch(statements);
+    m.queueId,m.mode,m.champion,m.win?1:0,m.kills,m.deaths,m.assists,JSON.stringify(m)).run();
+   downloaded++;
   }
   return respond({status:"ok",account:"daxs#EUW",requested:count,listed:ids.length,
-   reused:known.size,downloaded:matches.length,nextStart:start+ids.length,
+   reused:known.size,downloaded,nextStart:start+ids.length,
    hasMore:ids.length===count});
  }catch(e){
   const code=e.status===429?429:e.status===401||e.status===403?503:502;
