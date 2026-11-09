@@ -9,12 +9,23 @@ async function riot(path,key){
   }
   return response.json();
 }
-export async function onRequestGet({env}){
+async function fromArchive(env){
+  if(!env.ATLAS_DB)return null;
+  try{
+    const rows=await env.ATLAS_DB.prepare("SELECT payload_json FROM matches ORDER BY game_start_ms DESC, match_id DESC LIMIT 20").all();
+    const matches=(rows.results||[]).map(row=>{try{return JSON.parse(row.payload_json);}catch(_){return null;}}).filter(Boolean);
+    return matches.length?matches:null;
+  }catch(error){console.error("Atlas latest fallback failed",error);return null;}
+}
+export async function onRequestGet({env,request}){
   if(!env.RIOT_API_KEY)return json({status:"needs_configuration",message:"Connessione Riot non configurata: manca il segreto RIOT_API_KEY su Cloudflare."},503);
   try{
     const account=await riot("/riot/account/v1/accounts/by-riot-id/daxs/EUW",env.RIOT_API_KEY);
     const ids=await riot("/lol/match/v5/matches/by-puuid/"+encodeURIComponent(account.puuid)+"/ids?start=0&count=20",env.RIOT_API_KEY);
-    const matches=await Promise.all(ids.map(async id=>{
+    // Resolve matches in small batches to avoid a twenty-request Riot burst.
+    const matches=[];
+    for(let i=0;i<ids.length;i+=2){
+      const batch=await Promise.all(ids.slice(i,i+2).map(async id=>{
       const game=await riot("/lol/match/v5/matches/"+encodeURIComponent(id),env.RIOT_API_KEY);
       const p=game.info?.participants?.find(p=>p.puuid===account.puuid);
       if(!p)return null;
@@ -32,7 +43,9 @@ export async function onRequestGet({env}){
         turretDamage:player.damageDealtToTurrets,objectiveDamage:player.damageDealtToObjectives
       }));
       return {participants,teamId:p.teamId,puuid:account.puuid,id,champion:p.championName,kills:p.kills,deaths:p.deaths,assists:p.assists,damageDealt:p.totalDamageDealtToChampions,damageTaken:p.totalDamageTaken,physicalDamageTaken:p.physicalDamageTaken,magicDamageTaken:p.magicDamageTaken,trueDamageTaken:p.trueDamageTaken,totalDamageDealt:p.totalDamageDealt,totalPhysicalDamageDealt:p.physicalDamageDealt,totalMagicDamageDealt:p.magicDamageDealt,totalTrueDamageDealt:p.trueDamageDealt,damageSelfMitigated:p.damageSelfMitigated,totalHealsOnTeammates:p.totalHealsOnTeammates,physicalDamage:p.physicalDamageDealtToChampions,magicDamage:p.magicDamageDealtToChampions,trueDamage:p.trueDamageDealtToChampions,gold:p.goldEarned,cs:(p.totalMinionsKilled||0)+(p.neutralMinionsKilled||0),vision:p.visionScore,wardsPlaced:p.wardsPlaced,wardsKilled:p.wardsKilled,healing:p.totalHeal,shielding:p.totalDamageShieldedOnTeammates,ccSeconds:p.timeCCingOthers,turretDamage:p.damageDealtToTurrets,objectiveDamage:p.damageDealtToObjectives,level:p.champLevel,position:p.teamPosition,items:[p.item0,p.item1,p.item2,p.item3,p.item4,p.item5,p.item6],win:p.win,mode:game.info.gameMode,durationSeconds:game.info.gameDuration,startedAt:game.info.gameStartTimestamp,queueId:game.info.queueId};
-    }));
+      }));
+      matches.push(...batch);
+    }
     const validMatches=matches.filter(Boolean);
     // An archive write is idempotent: re-fetching the same Riot match never duplicates it.
     // Keep the original latest-match API usable if D1 is temporarily unavailable.
@@ -61,7 +74,11 @@ export async function onRequestGet({env}){
     await recordError(env,"riot_latest",s===429?"rate_limited":s===401||s===403?"auth_error":s===404?"not_found":"upstream_error");
     if(s===401||s===403)return json({status:"riot_key_invalid",message:"La chiave Riot non è valida o è scaduta."},503);
     if(s===404)return json({status:"not_found",message:"Account Riot o partite non trovati."},404);
-    if(s===429)return json({status:"rate_limited",message:"Limite Riot raggiunto: riprova tra poco."},429);
+    if(s===429){
+      const archived=await fromArchive(env);
+      if(archived)return json({status:"ok",account:"daxs#EUW",matches:archived,source:"atlas_archive",stale:true,message:"Limite Riot raggiunto: visualizzazione delle ultime partite già archiviate."});
+      return json({status:"rate_limited",message:"Limite Riot raggiunto: riprova tra poco."},429);
+    }
     return json({status:"unavailable",message:"Impossibile recuperare le partite Riot al momento."},502);
   }
 }
