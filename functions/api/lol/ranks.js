@@ -18,6 +18,7 @@ export async function onRequestGet({request,env}){
   const players=game.info?.participants||[];
   if(!players.some(p=>p.puuid===account.puuid))return json({status:"not_found"},404);
   const ranks={};
+  const failed=[];
   // Three at a time, so a page expansion does not launch ten requests simultaneously.
   for(let i=0;i<players.length;i+=3){
    await Promise.all(players.slice(i,i+3).map(async p=>{
@@ -25,8 +26,13 @@ export async function onRequestGet({request,env}){
      const entries=await riot("euw1","/lol/league/v4/entries/by-puuid/"+encodeURIComponent(p.puuid),env.RIOT_API_KEY);
      const solo=entries.find(e=>e.queueType==="RANKED_SOLO_5x5");
      ranks[p.puuid]=solo?{tier:solo.tier,division:solo.rank,lp:solo.leaguePoints,queue:"Solo/Duo"}:null;
-    }catch(error){ranks[p.puuid]=null;}
+    }catch(error){failed.push({puuid:p.puuid,status:error.status||502});}
    }));
+  }
+  if(failed.length){
+   const statuses=failed.map(f=>f.status);
+   const httpStatus=statuses.includes(429)?429:statuses.some(s=>s===401||s===403)?503:502;
+   return json({status:"partial_unavailable",message:httpStatus===429?"Limite Riot raggiunto. Riprova tra poco.":"Alcuni rank non sono disponibili. Riprova.",match:id,failedCount:failed.length},httpStatus);
   }
   return json({status:"ok",match:id,ranks,asOf:new Date().toISOString()});
  }catch(error){
